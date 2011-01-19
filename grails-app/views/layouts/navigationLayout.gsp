@@ -23,9 +23,6 @@
   <ul>
     <li>Quick Start</li>
     <li><a href="${createLink(uri: '/')}" class="dashboard" title="Dashboard">Dashboard</a></li>
-    <li><g:link controller="info" action="gettingstarted">Getting Started</g:link></li>
-    <li><g:link controller="info" action="downloads">Downloads</g:link></li>
-    <li><g:link controller="info" action="getinvolved">Get involved</g:link></li>
   </ul>
 </div>
 

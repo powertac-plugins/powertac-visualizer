@@ -15,6 +15,6 @@ class JmsMessageService {
   def handleIncomingMessage(String string) {
     println 'Received raw message: ' + string
     def parsingResult = XML.parse (string)
-    println "Parsing object with name property: ${parsingResult?.name}"
+    println "Parsed object: ${parsingResult}"
   }
 }

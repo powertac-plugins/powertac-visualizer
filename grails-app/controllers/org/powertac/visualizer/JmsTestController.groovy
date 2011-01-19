@@ -20,7 +20,7 @@ class JmsTestController {
     if (!competition) competition = new Competition(name: 'test', current: true, enabled: true).save()
     String competitionXml = competition as XML
     jmsService.send('public.visualizerIn', competitionXml, 'standard', null)
-    flash.message = "Competition created and sent to JMS queue"
+    flash.message = "Competition with id '${competition.id}' sent to JMS queue"
     redirect(action: '')
   }
 
@@ -33,7 +33,7 @@ class JmsTestController {
       if (!broker) broker = new Broker(competition: competition, userName: 'testBroker', apiKey: 'testApiKey-which-needs-to-be-longer-than-32-characters').save()
       String xmlString = broker as XML
       jmsService.send('public.visualizerIn', xmlString, 'standard', null)
-      flash.message = "Broker created and sent to JMS queue"
+      flash.message = "Broker with id ${broker.id} sent to JMS queue"
     }
     redirect(action: '')
   }
@@ -47,7 +47,7 @@ class JmsTestController {
       if (!product) product = new Product(competition: competition, productType: ProductType.Future).save()
       String xmlString = product as XML
       jmsService.send('public.visualizerIn', xmlString, 'standard', null)
-      flash.message = 'Product created and sent to JMS queue'
+      flash.message = "Product with id ${product.id} sent to JMS queue"
     }
     redirect(action: '')
   }
@@ -61,7 +61,7 @@ class JmsTestController {
       if (!timeslot) timeslot = new Timeslot(competition: competition, serialNumber: 0, enabled: true, current: true).save()
       String xmlString = timeslot as XML
       jmsService.send('public.visualizerIn', xmlString, 'standard', null)
-      flash.message = 'Timeslot created and sent to JMS queue'
+      flash.message = "Timeslot with id ${timeslot.id} sent to JMS queue"
     }
     redirect(action: '')
   }
@@ -74,14 +74,18 @@ class JmsTestController {
       def timeslot = Timeslot.findByCompetition(competition)
       def product = Product.findByCompetition(competition)
       def broker = Broker.findByCompetition(competition)
-      if (!timeslot || !product || broker) {
-        flash.message = "Make sure that you have created a competition, product, timeslot, and broker before trying to send a shout"
+
+      def shout = new Shout(competition: competition, product: product, timeslot: timeslot, broker: broker, quantity: random.nextDouble(), limitPrice: random.nextDouble(), buySellIndicator: (random.nextBoolean() ? BuySellIndicator.SELL : BuySellIndicator.BUY), orderType: OrderType.LIMIT, transactionId: IdGenerator.createId(), latest: true, shoutId: IdGenerator.createId())
+      if (!shout.validate()) {
+        flash.message = "Failed to validate shout: ${shout.errors.allErrors}"
+        shout.discard()
       } else {
-        def shout = new Shout(competition: competition, product: product, timeslot: timeslot, broker: broker, quantity: random.nextDouble(), buySellIndicator: (random.nextBoolean() ? BuySellIndicator.SELL : BuySellIndicator.BUY), orderType: OrderType.LIMIT, transactionId: IdGenerator.createId(), latest: true, shoutId: IdGenerator.createId()).save()
-        def xmlString = shout as XML
+        shout.save()
+        String xmlString = shout as XML
         jmsService.send('public.visualizerIn', xmlString, 'standard', null)
-        flash.message = 'Shout created and sent to JMS queue'
+        flash.message = "Shout with id ${shout.id} created and sent to JMS queue"
       }
+
       redirect(action: '')
     }
   }
