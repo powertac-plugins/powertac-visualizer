@@ -1,21 +1,20 @@
 package org.powertac.visualizer
 
+import grails.plugin.jms.Queue
+import grails.converters.XML
+
 class JmsMessageService {
 
   static transactional = true
 
   static expose = ['jms']
 
-  static final QUEUE_NAME = 'public.visualizerIn'
+  def jmsService
 
-  @Queue(name = QUEUE_NAME)
+  @Queue(name = 'public.visualizerIn')
   def handleIncomingMessage(String string) {
-    if (log.isInfoEnabled()) log.info("Received new message:  ${xmlString}")
+    println 'Received raw message: ' + string
+    def parsingResult = XML.parse (string)
+    println "Parsing object with name property: ${parsingResult?.name}"
   }
-
-  def sendTestMessage(String string) {
-    if (log.isInfoEnabled()) log.info "Send message '$string' to ${queueNames}"
-    sendQueueJMSMessage(QUEUE_NAME, string)
-  }
-
 }
