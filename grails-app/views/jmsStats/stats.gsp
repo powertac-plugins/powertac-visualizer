@@ -32,7 +32,7 @@
 <div class="body">
   <h1><g:message code="default.stats.label" args="[entityName]" default="JMS Stats"/></h1>
   <g:if test="${flash.message}">
-    <div class="success">${flash.message}</div>
+    <div class="message">${flash.message}</div>
   </g:if>
   <div class="list">
     <table>

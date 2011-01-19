@@ -26,6 +26,9 @@
 <h1>JMS Testing Controller</h1>
 
 <div class="clear"></div>
+<g:if test="${flash.message}">
+  <div class="message">${flash.message}</div>
+</g:if>
 
 <div id="content-box">
 
@@ -34,7 +37,11 @@
       Send JMS test messages
     </div>
     <ul>
-      <li><g:link action="sendCompetition">Create and send demo competition</g:link> </li>
+      <li><g:link action="sendCompetition">Find or create competition -&gt; JMS</g:link> </li>
+      <li><g:link action="sendBroker">Find or create broker -&gt; JMS</g:link> </li>
+      <li><g:link action="sendProduct">Find or create product -&gt; JMS</g:link> </li>
+      <li><g:link action="sendTimeslot">Find or create timeslot -&gt; JMS</g:link> </li>
+      <li><g:link action="sendShout">Create a new shout instance and send it to JMS</g:link> </li>
     </ul>
 
   </div>
