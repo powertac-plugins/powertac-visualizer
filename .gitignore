@@ -9,6 +9,7 @@ target/
 activemq-data/
 logs/
 webapp/css/smoothness/*
+stacktrace.log
 
 # OS generated files
 .DS_Store?
