@@ -21,6 +21,7 @@ Thumbs.db
 
 # Compiled source
 *.class
+*.war
 
 # Cobertura generated files
 cobertura.ser
