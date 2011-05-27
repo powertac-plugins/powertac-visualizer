@@ -3,6 +3,9 @@
 	<name>powertac-visualizer</name>
 	<comment></comment>
 	<projects>
+		<project>powertac-common</project>
+		<project>powertac-server</project>
+		<project>powertac-server-interface</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
