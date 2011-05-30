@@ -26,12 +26,12 @@ class MessagingService implements VisualizationListener, InitializationService {
    */
   void init() {
     visualizationProxyService?.registerVisualizationListener(this)
-    log.info "Registering the visualizer with the visualizerProxy"
+    log.info ">>> Registering the visualizer with the visualizerProxy"
   }
 
   @Override
   public void receiveMessage(msg) {
-    log.info "New message received"
+    log.info ">>> New message received"
   }
 
 }
