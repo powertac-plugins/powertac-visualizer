@@ -2,6 +2,8 @@ grails.project.class.dir = "target/classes"
 grails.project.test.class.dir = "target/test-classes"
 grails.project.test.reports.dir = "target/test-reports"
 //grails.project.war.file = "target/${appName}-${appVersion}.war"
+grails.plugin.location.powertacCommon = "../powertac-common"
+grails.plugin.location.powertacServerInterface = "../powertac-server-interface"
 grails.project.dependency.resolution = {
   // inherit Grails' default dependencies
   inherits("global") {
@@ -31,7 +33,5 @@ grails.project.dependency.resolution = {
 
   plugins {
     build ':joda-time:1.1'
-    build ':powertac-common:latest.integration'
-    build ':powertac-server-interface:latest.integration'
   }
 }
