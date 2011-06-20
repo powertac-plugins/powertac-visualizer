@@ -1,13 +1,31 @@
+%{--
+- Copyright 2010-2011 [Adis Mustedanagic / PowerTAC].
+    -
+- Licensed under the Apache License, Version 2.0 (the "License");
+- you may not use this file except in compliance with the License.
+    - You may obtain a copy of the License at
+-
+-  http://www.apache.org/licenses/LICENSE-2.0
+-
+- Unless required by applicable law or agreed to in writing, software
+- distributed under the License is distributed on an
+-
+- "AS IS" BASIS,  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+-
+- either express or implied. See the License for the specific language
+- governing permissions and limitations under the License.
+    --}%
+
 <!DOCTYPE html>
 <html>
 	<head>
 	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 		<title>Visualizer - work version</title>
-		<link type="text/css" href="css/style.css" rel="stylesheet" />
-		<link type="text/css" href="css/south-street/jquery-ui-1.8.13.custom.css" rel="stylesheet" />
+		<link type="text/css" href="${resource(dir:'css',file:'style.css',plugin:'powertac-visualizer')}" rel="stylesheet" />
+                <link type="text/css" href="${resource(dir:'css/south-street/',file:'jquery-ui-1.8.13.custom.css',plugin:'powertac-visualizer')}" rel="stylesheet" />
 		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
 		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/jquery-ui.min.js"></script>
-		<script type="text/javascript" src="js/jquery.flot.min.js"></script>
+                <script type="text/javascript" src="${resource(dir:'js',file:'jquery.flot.min.js',plugin:'powertac-visualizer')}"></script>
 		<!--[if IE]><script language="javascript" type="text/javascript" src="js/excanvas.min.js"></script><![endif]-->
 	
 		<script type="text/javascript">
@@ -72,19 +90,20 @@
 	</head>
 	
 	<body>
-		<!-- Header = logo + some powertac info -->
-		<div id="header">
-			<div id="logo">
-				<img src="images/header-small.png"/>
-			</div>
-		</div>
-		
 		<div id="content">
 		<!-- Game general info -->
 			<div id="info" class="accordion">
 			<h3><a href="#">Game info</a></h3>
-				<div>     
-                                      <g:gameInformation />
+				<div id="info-content">
+					<div id="logo">
+						<img src="${resource(dir:'images',file:'header-small.png',plugin:'powertac-visualizer')}"/>
+					</div>
+					<p>General information about the game, duration, etc.</p>
+					<div style="float:left">
+						<h3>Timeslots passed:</h3> 24
+						<h3>Market closing time:</h3> No
+					</div>
+					
 				</div>
 			</div>
 			
@@ -95,37 +114,37 @@
 					<p> Quick broker overview. Additional info will be shown in addition to icons.</p>
 						<div class="broker_img">
 							<div class="image">
-								<img src="images/brokers/broker-1.png" height="64px" width="64px"></img>
+								<img src="${resource(dir:'images/brokers/',file:'broker-1.png',plugin:'powertac-visualizer')}" height="64px" width="64px"></img>
 								<div>Broker 1</div>
 							</div>
 							<div class="image">
-								<img src="images/brokers/broker-2.png" height="64px" width="64px"></img>
+								<img src="${resource(dir:'images/brokers/',file:'broker-2.png',plugin:'powertac-visualizer')}" height="64px" width="64px"></img>
 								<div>Broker 2</div>
 							</div>
 							<div class="image">
-								<img src="images/brokers/broker-3.png" height="64px" width="64px"></img>
+								<img src="${resource(dir:'images/brokers/',file:'broker-3.png',plugin:'powertac-visualizer')}" height="64px" width="64px"></img>
 								<div>Broker 3</div>
 							</div>
 							<div class="image">
-								<img src="images/brokers/broker-4.png" height="64px" width="64px"></img>
+								<img src="${resource(dir:'images/brokers/',file:'broker-4.png',plugin:'powertac-visualizer')}" height="64px" width="64px"></img>
 								<div>Broker 4</div>
 							</div>
 						</div>
 						<div class="broker_img">
 							<div class="image">
-								<img src="images/brokers/broker-5.png" height="64px" width="64px"></img>
+								<img src="${resource(dir:'images/brokers/',file:'broker-5.png',plugin:'powertac-visualizer')}" height="64px" width="64px"></img>
 								<div>Broker 5</div>
 							</div>
 							<div class="image">
-								<img src="images/brokers/broker-6.png" height="64px" width="64px"></img>
+								<img src="${resource(dir:'images/brokers/',file:'broker-6.png',plugin:'powertac-visualizer')}" height="64px" width="64px"></img>
 								<div>Broker 6</div>
 							</div>
 							<div class="image">
-								<img src="images/brokers/broker-7.png" height="64px" width="64px"></img>
+								<img src="${resource(dir:'images/brokers/',file:'broker-7.png',plugin:'powertac-visualizer')}" height="64px" width="64px"></img>
 								<div>Broker 7</div>
 							</div>
 							<div class="image">
-								<img src="images/brokers/broker-8.png" height="64px" width="64px"></img>
+								<img src="${resource(dir:'images/brokers/',file:'broker-8.png',plugin:'powertac-visualizer')}" height="64px" width="64px"></img>
 								<div>Broker 8</div>
 							</div>
 						</div>
@@ -137,22 +156,22 @@
 					<div>
 						<div>
 							<h2>Weather forecast:</h2><br>
-							<img src="images/weather/sunny.png" height="64px" width="64px"></img>
-							<img src="images/weather/cloudy2.png" height="64px" width="64px"></img>
-							<img src="images/weather/overcast.png" height="64px" width="64px"></img>
-							<img src="images/weather/sunny_night.png" height="64px" width="64px"></img>
-							<img src="images/weather/cloudy2_night.png" height="64px" width="64px"></img>
+							<img src="${resource(dir:'images/weather/',file:'sunny.png',plugin:'powertac-visualizer')}" height="64px" width="64px"></img>
+							<img src="${resource(dir:'images/weather/',file:'cloudy2.png',plugin:'powertac-visualizer')}" height="64px" width="64px"></img>
+							<img src="${resource(dir:'images/weather/',file:'overcast.png',plugin:'powertac-visualizer')}" height="64px" width="64px"></img>
+							<img src="${resource(dir:'images/weather/',file:'sunny_night.png',plugin:'powertac-visualizer')}" height="64px" width="64px"></img>
+							<img src="${resource(dir:'images/weather/',file:'cloudy2_night.png',plugin:'powertac-visualizer')}" height="64px" width="64px"></img>
 						</div>
 						<div>
 							<h2>Wind direction:</h2>
-							<img src="images/wind/n.png"></img>
-							<img src="images/wind/ne.png"></img>
-							<img src="images/wind/e.png"></img>
-							<img src="images/wind/se.png"></img>
-							<img src="images/wind/s.png"></img>
-							<img src="images/wind/sw.png"></img>
-							<img src="images/wind/w.png"></img>
-							<img src="images/wind/nw.png"></img>
+							<img src="${resource(dir:'images/wind/',file:'n.png',plugin:'powertac-visualizer')}"></img>
+							<img src="${resource(dir:'images/wind/',file:'ne.png',plugin:'powertac-visualizer')}"></img>
+							<img src="${resource(dir:'images/wind/',file:'e.png',plugin:'powertac-visualizer')}"></img>
+							<img src="${resource(dir:'images/wind/',file:'se.png',plugin:'powertac-visualizer')}"></img>
+							<img src="${resource(dir:'images/wind/',file:'s.png',plugin:'powertac-visualizer')}"></img>
+							<img src="${resource(dir:'images/wind/',file:'sw.png',plugin:'powertac-visualizer')}"></img>
+							<img src="${resource(dir:'images/wind/',file:'w.png',plugin:'powertac-visualizer')}"></img>
+							<img src="${resource(dir:'images/wind/',file:'nw.png',plugin:'powertac-visualizer')}"></img>
 						</div>
 					</div>
 				</div>

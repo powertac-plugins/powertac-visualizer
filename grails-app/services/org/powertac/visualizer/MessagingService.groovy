@@ -9,6 +9,10 @@ class MessagingService implements VisualizationListener, InitializationService {
   static transactional = true
 
   def visualizationProxyService
+  
+  def competitionName
+  def competitionId
+  def brokers
 
   @Override
   void setDefaults() {
@@ -31,7 +35,16 @@ class MessagingService implements VisualizationListener, InitializationService {
 
   @Override
   public void receiveMessage(msg) {
-    log.info ">>> New message received"
+    println ">>> New message"
+    if (msg instanceof Competition) {
+        println ">>> Competition"
+        competitionName = msg.name
+        competitionId = msg.id
+        brokers = msg.brokers
+        for (broker in brokers) {
+            println broker
+        }
+    }
   }
 
 }
