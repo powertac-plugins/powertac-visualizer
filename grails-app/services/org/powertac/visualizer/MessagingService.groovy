@@ -35,14 +35,14 @@ class MessagingService implements VisualizationListener, InitializationService {
 
   @Override
   public void receiveMessage(msg) {
-    println ">>> New message"
+    //println ">>> New message"
     if (msg instanceof Competition) {
-        println ">>> Competition"
+        //println ">>> Competition"
         competitionName = msg.name
         competitionId = msg.id
         brokers = msg.brokers
         for (broker in brokers) {
-            println broker
+            //println broker
         }
     }
   }
