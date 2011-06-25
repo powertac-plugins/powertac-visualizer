@@ -36,13 +36,17 @@ class MessagingService implements VisualizationListener, InitializationService {
   @Override
   public void receiveMessage(msg) {
     println ">>> New message"
+    /**
+     * Parse the initial message and collect information about brokers (agents)
+     * and other relevant info about the competition
+     */
     if (msg instanceof Competition) {
         println ">>> Competition"
         competitionName = msg.name
         competitionId = msg.id
         brokers = msg.brokers
         for (broker in brokers) {
-            println broker
+            // TODO: Create an instance of agent for every broker in the message
         }
     }
   }
