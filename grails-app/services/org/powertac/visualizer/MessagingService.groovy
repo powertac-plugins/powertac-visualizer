@@ -35,7 +35,6 @@ class MessagingService implements VisualizationListener, InitializationService {
 
   @Override
   public void receiveMessage(msg) {
-<<<<<<< HEAD
     println ">>> New message"
     /**
      * Parse the initial message and collect information about brokers (agents)
