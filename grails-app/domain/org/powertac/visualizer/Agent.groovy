@@ -1,6 +1,6 @@
 package org.powertac.visualizer
 
-class Broker {
+class Agent {
     
     String username
     BigDecimal balance
@@ -8,5 +8,4 @@ class Broker {
 
     static constraints = {
     }
-    
 }
