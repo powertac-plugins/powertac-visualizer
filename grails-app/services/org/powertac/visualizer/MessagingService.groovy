@@ -37,7 +37,6 @@ class MessagingService implements VisualizationListener, InitializationService {
 
     @Override
     public void receiveMessage(msg) {
-        println ">>> New message"
         /**
          * Parse the initial message and collect information about brokers (agents)
          * and other relevant info about the competition
@@ -50,9 +49,9 @@ class MessagingService implements VisualizationListener, InitializationService {
             brokers = msg.brokers
             for (broker in brokers) {
                 // TODO: Create an instance of agent for every broker in the message
-                //println broker
                 def agent = new Agent(username: broker)
                 agents.add(agent)
+				agent.save()
             }
             
             println "--- <Brokers> ---"
