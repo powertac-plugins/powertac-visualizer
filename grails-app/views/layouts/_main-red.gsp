@@ -10,6 +10,7 @@
         <p>General information about the game, duration, etc.</p>
         <div style="float:left">
           <g:gameInformation />
+		  <g:simpleTag />
         </div>
 
       </div>
@@ -84,8 +85,16 @@
         </div>
       </div>
     </div>
+	
+	<div id="right-panel">
+		<div id="details" style="position: relative;">
+			<div id="tabs">
+				<g:agentListTabs />
+				<g:agentListTabContent />
+			</div>
+		</div>
+	</div>
 
-    <g:render template="/layouts/rpanel" plugin="powertac-visualizer" collection="${agents}"/>
 
 </body>
 </html>
