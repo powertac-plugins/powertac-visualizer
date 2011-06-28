@@ -3,6 +3,7 @@ package org.powertac.visualizer
 import org.powertac.common.interfaces.VisualizationListener
 import org.powertac.common.interfaces.InitializationService
 import org.powertac.common.Competition
+import org.powertac.common.Broker
 
 class MessagingService implements VisualizationListener, InitializationService {
 
@@ -14,6 +15,7 @@ class MessagingService implements VisualizationListener, InitializationService {
     def competitionId
     def brokers
     
+	Agent agent
     List agents = []
 
     @Override
@@ -61,6 +63,8 @@ class MessagingService implements VisualizationListener, InitializationService {
             }
             println "--- </Brokers> ---"
         }
+		
+		//TODO: Other message instances parsing
     }
 
 }

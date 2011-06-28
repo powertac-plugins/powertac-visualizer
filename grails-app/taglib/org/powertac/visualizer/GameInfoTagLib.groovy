@@ -35,6 +35,7 @@ class GameInfoTagLib {
 			out << agent.username
 			out << "\">"
 			
+			// TODO: Here goes agent info extraction.
 			out << "More information incoming."
 			
 			out << "</div>\n"
