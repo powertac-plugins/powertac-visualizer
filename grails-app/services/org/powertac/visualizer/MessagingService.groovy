@@ -47,7 +47,7 @@ class MessagingService implements VisualizationListener, InitializationService {
 		println msg.getClass()
 		
 		if (msg instanceof ArrayList) {
-			println msg
+			//println msg
 		}
 		
         if (msg instanceof Competition) {
