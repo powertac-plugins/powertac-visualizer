@@ -43,8 +43,7 @@ class MessagingService implements VisualizationListener, InitializationService {
          * Parse the initial message and collect information about brokers (agents)
          * and other relevant info about the competition
          */
-		println ">> New message >>"
-		println msg.getClass()
+		println "New message >> " + msg.getClass()
 		
 		if (msg instanceof ArrayList) {
 			//println msg
