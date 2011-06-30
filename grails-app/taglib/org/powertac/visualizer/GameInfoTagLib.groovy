@@ -12,8 +12,8 @@ class GameInfoTagLib {
         out << MessagingService.competitionId
     }
 	
-	def simpleTag = {
-		out << "Generic 2."
+	def testTag = {
+		out << "Test successful."
 	}
 	
 	def agentListTabs = {

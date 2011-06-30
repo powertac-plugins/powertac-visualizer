@@ -10,7 +10,6 @@
         <p>General information about the game, duration, etc.</p>
         <div style="float:left">
           <g:gameInformation />
-		  <g:simpleTag />
         </div>
 
       </div>

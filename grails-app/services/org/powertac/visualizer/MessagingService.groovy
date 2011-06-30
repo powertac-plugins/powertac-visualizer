@@ -43,25 +43,26 @@ class MessagingService implements VisualizationListener, InitializationService {
          * Parse the initial message and collect information about brokers (agents)
          * and other relevant info about the competition
          */
-        //println ">>> New message"
+		println ">> New message >>"
+		println msg.getClass()
+		
+		if (msg instanceof ArrayList) {
+			println msg
+		}
+		
         if (msg instanceof Competition) {
-            //println ">>> Competition"
             competitionName = msg.name
             competitionId = msg.id
             brokers = msg.brokers
             for (broker in brokers) {
-                // TODO: Create an instance of agent for every broker in the message
+                /** 
+				 * TODO: Create an instance of agent for every broker in the message
+				 * ISSUE: Brokers are only strings, not broker instances
+				 */
                 def agent = new Agent(username: broker)
                 agents.add(agent)
 				agent.save()
             }
-            
-            println "--- <Brokers> ---"
-            for (agent in agents) {
-                println agent.username
-                println agent.balance
-            }
-            println "--- </Brokers> ---"
         }
 		
 		//TODO: Other message instances parsing
