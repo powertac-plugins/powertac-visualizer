@@ -2,6 +2,7 @@ package org.powertac.visualizer
 
 import org.powertac.common.interfaces.VisualizationListener
 import org.powertac.common.interfaces.InitializationService
+import org.powertac.common.CashPosition
 import org.powertac.common.Competition
 import org.powertac.common.Broker
 
@@ -43,11 +44,17 @@ class MessagingService implements VisualizationListener, InitializationService {
          * Parse the initial message and collect information about brokers (agents)
          * and other relevant info about the competition
          */
-		println "New message >> " + msg.getClass()
-		
+		 
+		/*
 		if (msg instanceof ArrayList) {
-			//println msg
+			println "Arraylist -> "
+			for (i in msg) {
+				println "    ...of >> " + msg[0].getClass()
+			}
+		} else {
+			println "New message >> " + msg.getClass()
 		}
+		*/
 		
         if (msg instanceof Competition) {
             competitionName = msg.name

@@ -8,7 +8,7 @@
 		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
 		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/jquery-ui.min.js"></script>
         <script type="text/javascript" src="${resource(dir:'js',file:'jquery.flot.min.js',plugin:'powertac-visualizer')}"></script>
-		<!--[if IE]><script language="javascript" type="${resource(dir:'js',file:'excanvas.min.js',plugin:'powertac-visualizer')}"></script><![endif]-->
+		<!--[if IE]><script language="javascript" type= "${resource(dir:'js',file:'excanvas.min.js',plugin:'powertac-visualizer')}"></script><![endif]-->
 	
 		<script type="text/javascript">
 		$(document).ready(function($) {
@@ -30,40 +30,40 @@
 				var data1 = []
 				for (var i = 0; i < 15; i += 0.5) {
 						data1.push([i, i]);
+				}
+					
+				var data2 = []
+				for (var i = 0; i < 15; i += 0.5) {
+					data2.push([i, Math.sqrt(i * 10)]);
+				}
+					
+				var data3 = []
+				for (var i = 0; i < 15; i += 0.5) {
+					data3.push([i, Math.cos(i)]);
+				}
+					
+				$.plot($("#graph1"), [
+					{
+						data: data1,
+						lines: { show: true }
 					}
+				]);
 					
-					var data2 = []
-					for (var i = 0; i < 15; i += 0.5) {
-						data2.push([i, Math.sqrt(i * 10)]);
+				$.plot($("#graph2"), [
+					{
+						data: data2,
+						lines: { show: true }
 					}
+				]);
 					
-					var data3 = []
-					for (var i = 0; i < 15; i += 0.5) {
-						data3.push([i, Math.cos(i)]);
-					}
-					
-					$.plot($("#graph1"), [
-						{
-							data: data1,
-							lines: { show: true }
+				$.plot($("#graph3"), [
+					{
+						data: data3,
+						lines: { show: true }
 						}
-					]);
+				]);
 					
-					$.plot($("#graph2"), [
-						{
-							data: data2,
-							lines: { show: true }
-						}
-					]);
-					
-					$.plot($("#graph3"), [
-						{
-							data: data3,
-							lines: { show: true }
-						}
-					]);
-					
-					$(".tickLabels").css("position","static");
+				$(".tickLabels").css("position","static");
 					
 			});
 			//return false;
