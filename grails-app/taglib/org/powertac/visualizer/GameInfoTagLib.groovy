@@ -1,9 +1,20 @@
 package org.powertac.visualizer
 
+/**
+ * Tag library that is used to generate the dynamic information from
+ * MessagingService.groovy to the _main.gsp of the visualizer plugin
+ */
 class GameInfoTagLib {
     
     def MessagingService
 	def agent
+	
+	/** 
+	 * A simple tag for testing purposes
+	 */
+	def testTag = {
+		out << "Test successful."
+	}
     
     def gameInformation = {
         out << "<h3>Competition name:</h3>"
@@ -12,10 +23,9 @@ class GameInfoTagLib {
         out << MessagingService.competitionId
     }
 	
-	def testTag = {
-		out << "Test successful."
-	}
-	
+	/**
+	 * This taglib will generate agent tabs in the visualizer
+	 */
 	def agentListTabs = {
 		out << "<ul>"
 		for (agent in MessagingService.agents) {
@@ -28,7 +38,9 @@ class GameInfoTagLib {
 		}
 		out << "</ul>"
 	}
-	
+	/**
+	 * Content (graphs and other info) for the agent tabs in the visualizer
+	 */
 	def agentListTabContent = {
 		for (agent in MessagingService.agents) {
 			out << "<div id=\""
@@ -41,4 +53,21 @@ class GameInfoTagLib {
 			out << "</div>\n"
 		}
 	}
+	
+	/**
+	 * Weather report taglib
+	 * TODO: Adjust the icons according to the possible values of weather report
+	 */
+	 def weatherReport = {
+		out << "<h3>Current timeslot: </h3>\n"
+		out << MessagingService.weatherReport.currentTimeslot
+		out << "\n<h3>Temperature: </h3>"
+		out << MessagingService.weatherReport.temperature
+		out << "\n<h3>Wind speed: </h3>"
+		out << MessagingService.weatherReport.windSpeed
+		out << "\n<h3>Wind direction: </h3>"
+		out << MessagingService.weatherReport.windDirection
+		out << "\n<h3>Cloud cover: </h3>"
+		out << MessagingService.weatherReport.cloudCover
+	 }
 }

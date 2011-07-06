@@ -2,9 +2,11 @@ package org.powertac.visualizer
 
 import org.powertac.common.interfaces.VisualizationListener
 import org.powertac.common.interfaces.InitializationService
+import org.powertac.common.Broker
 import org.powertac.common.CashPosition
 import org.powertac.common.Competition
-import org.powertac.common.Broker
+import org.powertac.common.WeatherReport
+
 
 class MessagingService implements VisualizationListener, InitializationService {
 
@@ -18,6 +20,8 @@ class MessagingService implements VisualizationListener, InitializationService {
     
 	Agent agent
     List agents = []
+	
+	WeatherReport weatherReport
 
     @Override
     void setDefaults() {
@@ -41,8 +45,8 @@ class MessagingService implements VisualizationListener, InitializationService {
     @Override
     public void receiveMessage(msg) {
         /**
-         * Parse the initial message and collect information about brokers (agents)
-         * and other relevant info about the competition
+         * Parse the initial message and collect information about brokers
+		 * (agents) and other relevant info about the competition
          */
 		 
 		/*
@@ -62,14 +66,17 @@ class MessagingService implements VisualizationListener, InitializationService {
             brokers = msg.brokers
             for (broker in brokers) {
                 /** 
-				 * TODO: Create an instance of agent for every broker in the message
+				 * TODO: Create an instance of agent for every broker in the 
+				 * message
 				 * ISSUE: Brokers are only strings, not broker instances
 				 */
                 def agent = new Agent(username: broker)
                 agents.add(agent)
 				agent.save()
             }
-        }
+        } else if (msg instanceof WeatherReport) {
+			weatherReport = msg
+		}
 		
 		//TODO: Other message instances parsing
     }

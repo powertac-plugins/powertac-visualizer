@@ -1,3 +1,10 @@
+<!--
+IMPORTANT:
+
+This file is for code reference only, DO NOT use it for anything else as it will
+not be updated at all.
+-->
+
 <!DOCTYPE html>
 <html>
 	<head>
@@ -132,7 +139,25 @@
 				<div id="forecast" class="accordion">
 					<h3><a href="#">Weather report</a></h3>
 					<div>
-						<g:weatherReport />
+						<div>
+							<h2>Weather forecast:</h2><br>
+							<img src="${resource(dir:'images/weather/',file:'sunny.png',plugin:'powertac-visualizer')}" height="64px" width="64px"></img>
+							<img src="${resource(dir:'images/weather/',file:'cloudy2.png',plugin:'powertac-visualizer')}" height="64px" width="64px"></img>
+							<img src="${resource(dir:'images/weather/',file:'overcast.png',plugin:'powertac-visualizer')}" height="64px" width="64px"></img>
+							<img src="${resource(dir:'images/weather/',file:'sunny_night.png',plugin:'powertac-visualizer')}" height="64px" width="64px"></img>
+							<img src="${resource(dir:'images/weather/',file:'cloudy2_night.png',plugin:'powertac-visualizer')}" height="64px" width="64px"></img>
+						</div>
+						<div>
+							<h2>Wind direction:</h2>
+							<img src="${resource(dir:'images/wind/',file:'n.png',plugin:'powertac-visualizer')}"></img>
+							<img src="${resource(dir:'images/wind/',file:'ne.png',plugin:'powertac-visualizer')}"></img>
+							<img src="${resource(dir:'images/wind/',file:'e.png',plugin:'powertac-visualizer')}"></img>
+							<img src="${resource(dir:'images/wind/',file:'se.png',plugin:'powertac-visualizer')}"></img>
+							<img src="${resource(dir:'images/wind/',file:'s.png',plugin:'powertac-visualizer')}"></img>
+							<img src="${resource(dir:'images/wind/',file:'sw.png',plugin:'powertac-visualizer')}"></img>
+							<img src="${resource(dir:'images/wind/',file:'w.png',plugin:'powertac-visualizer')}"></img>
+							<img src="${resource(dir:'images/wind/',file:'nw.png',plugin:'powertac-visualizer')}"></img>
+						</div>
 					</div>
 				</div>
 			</div>
