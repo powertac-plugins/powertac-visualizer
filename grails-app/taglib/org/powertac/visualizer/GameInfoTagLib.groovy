@@ -7,13 +7,18 @@ package org.powertac.visualizer
 class GameInfoTagLib {
     
     def MessagingService
+	
 	def agent
+	def customer
 	
 	/** 
 	 * A simple tag for testing purposes
 	 */
 	def testTag = {
 		out << "Test successful."
+		for (customer in MessagingService.customers) {
+			out << customer.name
+		}
 	}
     
     def gameInformation = {
@@ -27,7 +32,7 @@ class GameInfoTagLib {
 	 * This taglib will generate agent tabs in the visualizer
 	 */
 	def agentListTabs = {
-		out << "<ul>"
+		out << "<ul>\n"
 		for (agent in MessagingService.agents) {
 			out << "<li><a href="
 			out << "#"
@@ -36,7 +41,7 @@ class GameInfoTagLib {
 			out << agent.username
 			out << "</a></li>"
 		}
-		out << "</ul>"
+		out << "</ul>\n"
 	}
 	/**
 	 * Content (graphs and other info) for the agent tabs in the visualizer
@@ -48,6 +53,35 @@ class GameInfoTagLib {
 			out << "\">"
 			
 			// TODO: Here goes agent info extraction.
+			out << "More information incoming."
+			
+			out << "</div>\n"
+		}
+	}
+	
+	/**
+	 * Taglibs for customer tabs
+	 */
+	def customerListTabs = {
+		out << "<ul>\n"
+		for (customer in MessagingService.customers) {
+			out << "<li><a href="
+			out << "#"
+			out << customer.name
+			out << "\">"
+			out << customer.name
+			out << "</a></li>"
+		}
+		out << "</ul>\n"
+	}
+	
+	def customerListTabContent = {
+		for (customer in MessagingService.customers) {
+			out << "<div id=\""
+			out << customer.name
+			out << "\">"
+			
+			// TODO: Here goes customer info extraction.
 			out << "More information incoming."
 			
 			out << "</div>\n"

@@ -5,8 +5,8 @@ import org.powertac.common.interfaces.InitializationService
 import org.powertac.common.Broker
 import org.powertac.common.CashPosition
 import org.powertac.common.Competition
+import org.powertac.common.CustomerInfo
 import org.powertac.common.WeatherReport
-
 
 class MessagingService implements VisualizationListener, InitializationService {
 
@@ -16,16 +16,22 @@ class MessagingService implements VisualizationListener, InitializationService {
   
     def competitionName
     def competitionId
-    def brokers
+    def brokerList
+	
+	def splitString
+	def word
+	def concatString = ""
     
-	Agent agent
     List agents = []
+	List customers = []
 	
 	WeatherReport weatherReport
 
     @Override
     void setDefaults() {
-        // Can be empty
+		/**
+         * Can be empty
+		 */
     }
 
     @Override
@@ -49,36 +55,66 @@ class MessagingService implements VisualizationListener, InitializationService {
 		 * (agents) and other relevant info about the competition
          */
 		 
-		/*
-		if (msg instanceof ArrayList) {
-			println "Arraylist -> "
-			for (i in msg) {
-				println "    ...of >> " + msg[0].getClass()
-			}
-		} else {
-			println "New message >> " + msg.getClass()
-		}
-		*/
+		/**
+		 * The following code is used to print the messages and their classes
+		 * that the visualizer receives.
+		 */ 
+		// if (msg instanceof ArrayList) {
+			// println "Arraylist -> "
+			// for (i in msg) {
+				// println "    ...of >> " + msg[0].getClass()
+			// }
+		// } else {
+			// println "New message >> " + msg.getClass()
+		// }
 		
-        if (msg instanceof Competition) {
+		/**
+		 * Check the message types and parse them
+		 */
+		if (msg instanceof WeatherReport) {
+			weatherReport = msg
+		} else if (msg instanceof ArrayList) {
+			/**
+			 * There are a lot of messages sent as ArrayLists, they need to be
+			 * parsed with care
+			 * The usual procedure is to check the class of the first message
+			 * and then parse the message accordingly
+			 */
+			 
+			 if (msg[0] instanceof CustomerInfo) {
+				for (customer in msg) {
+					println "customer : " + customer.name
+					splitString = customer.name.split()
+					for (word in splitString) {
+						concatString = concatString + word
+					}
+					def customerInstance = new Customer(name: concatString)
+					concatString = ""
+					customers.add(customerInstance)
+					//customerInstance.save()
+				}
+			 }
+			 
+		} else if (msg instanceof Competition) {
             competitionName = msg.name
             competitionId = msg.id
-            brokers = msg.brokers
-            for (broker in brokers) {
+            brokerList = msg.brokers
+            for (broker in brokerList) {
                 /** 
 				 * TODO: Create an instance of agent for every broker in the 
 				 * message
 				 * ISSUE: Brokers are only strings, not broker instances
 				 */
-                def agent = new Agent(username: broker)
-                agents.add(agent)
-				agent.save()
+				splitString = broker.split()
+				for (word in splitString) {
+					concatString = concatString + word
+				}
+                def agentInstance = new Agent(username: concatString)
+				concatString = ""
+                agents.add(agentInstance)
+				//agentInstance.save()
             }
-        } else if (msg instanceof WeatherReport) {
-			weatherReport = msg
-		}
-		
-		//TODO: Other message instances parsing
+        } 
     }
 
 }

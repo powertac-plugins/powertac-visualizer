@@ -18,7 +18,7 @@
 			});
 
 			// Tabs
-			$("#tabs").tabs();
+			$(".tabs").tabs();
 			
 			// Progressbar
 			$("#progressbar").progressbar({
@@ -139,9 +139,13 @@
 			
 			<div id="right-panel">
 				<div id="details" style="position: relative;">
-					<div id="tabs">
+					<div class="tabs">
 						<g:agentListTabs />
 						<g:agentListTabContent />
+					</div>
+					<div class="tabs">
+						<g:customerListTabs />
+						<g:customerListTabContent />
 					</div>
 				</div>
 			</div>
