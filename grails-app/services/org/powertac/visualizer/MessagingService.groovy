@@ -8,6 +8,10 @@ import org.powertac.common.Competition
 import org.powertac.common.CustomerInfo
 import org.powertac.common.WeatherReport
 
+import org.powertac.common.command.CustomerBootstrapData
+
+import org.powertac.common.msg.TimeslotUpdate
+
 class MessagingService implements VisualizationListener, InitializationService {
 
     static transactional = true
@@ -18,9 +22,7 @@ class MessagingService implements VisualizationListener, InitializationService {
     def competitionId
     def brokerList
 	
-	def splitString
-	def word
-	def concatString = ""
+	def timeslotNum = 1;
     
     List agents = []
 	List customers = []
@@ -47,22 +49,37 @@ class MessagingService implements VisualizationListener, InitializationService {
         visualizationProxyService?.registerVisualizationListener(this)
         log.info ">>> Registering the visualizer with the visualizerProxy"
     }
+	/**
+	 * A small bit of code here removes the spaces from the broker names, so 
+	 * that they don't break the web layout
+	 */
+	String removeSpaces(name) {	
+		def spacelessName = ""
+		
+		def splitString = name.split()
+		for (word in splitString) {
+			spacelessName = spacelessName + word
+		}
+	
+		return spacelessName
+	}
 
+	
+	/**
+     * Parse the initial message and collect information about brokers
+	 * (agents) and other relevant info about the competition
+     */
     @Override
     public void receiveMessage(msg) {
-        /**
-         * Parse the initial message and collect information about brokers
-		 * (agents) and other relevant info about the competition
-         */
 		 
 		/**
 		 * The following code is used to print the messages and their classes
 		 * that the visualizer receives.
 		 */ 
 		// if (msg instanceof ArrayList) {
-			// println "Arraylist -> "
+			// println "Arraylist of -> "
 			// for (i in msg) {
-				// println "    ...of >> " + msg[0].getClass()
+				// println " >> " + msg[0].getClass()
 			// }
 		// } else {
 			// println "New message >> " + msg.getClass()
@@ -73,6 +90,8 @@ class MessagingService implements VisualizationListener, InitializationService {
 		 */
 		if (msg instanceof WeatherReport) {
 			weatherReport = msg
+		} else if (msg instanceof TimeslotUpdate) {
+			timeslotNum++
 		} else if (msg instanceof ArrayList) {
 			/**
 			 * There are a lot of messages sent as ArrayLists, they need to be
@@ -80,21 +99,23 @@ class MessagingService implements VisualizationListener, InitializationService {
 			 * The usual procedure is to check the class of the first message
 			 * and then parse the message accordingly
 			 */
-			 
-			 if (msg[0] instanceof CustomerInfo) {
-				for (customer in msg) {
-					println "customer : " + customer.name
-					splitString = customer.name.split()
-					for (word in splitString) {
-						concatString = concatString + word
+			
+			for (message in msg) {			
+				if (message instanceof CashPosition) {
+					for (agent in agents) {
+						if (agent.username == removeSpaces(message.broker.username)) {
+							agent.balance = message.balance
+							agent.balanceHistory.add(agent.balance)
+						}
 					}
-					def customerInstance = new Customer(name: concatString)
-					concatString = ""
-					customers.add(customerInstance)
-					//customerInstance.save()
-				}
-			 }
-			 
+				}		
+			}
+		} else if (msg instanceof CustomerBootstrapData) {
+			def customer = msg.customer
+			def customerInstance = new Customer(name: removeSpaces(customer.name))
+			//println "customer : " + customerInstance.name
+			customers.add(customerInstance)
+			//customerInstance.save()
 		} else if (msg instanceof Competition) {
             competitionName = msg.name
             competitionId = msg.id
@@ -105,12 +126,7 @@ class MessagingService implements VisualizationListener, InitializationService {
 				 * message
 				 * ISSUE: Brokers are only strings, not broker instances
 				 */
-				splitString = broker.split()
-				for (word in splitString) {
-					concatString = concatString + word
-				}
-                def agentInstance = new Agent(username: concatString)
-				concatString = ""
+                def agentInstance = new Agent(username: removeSpaces(broker))
                 agents.add(agentInstance)
 				//agentInstance.save()
             }

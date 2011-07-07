@@ -53,7 +53,7 @@ class GameInfoTagLib {
 			out << "\">"
 			
 			// TODO: Here goes agent info extraction.
-			out << "More information incoming."
+			out << agent.balanceHistory
 			
 			out << "</div>\n"
 		}

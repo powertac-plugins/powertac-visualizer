@@ -88,51 +88,15 @@
 			<div id="left-panel">
 				<div id="overview" class="accordion">
 					<h3><a href="#">Broker overview</a></h3>
-						<div>
-							<p> Quick broker overview. Additional info will be shown in addition to icons.</p>
-							<div class="broker_img">
-								<div class="image">
-									<img src="${resource(dir:'images/brokers/',file:'broker-1.png',plugin:'powertac-visualizer')}" height="64px" width="64px"></img>
-									<div>Broker 1</div>
-								</div>
-							<div class="image">
-									<img src="${resource(dir:'images/brokers/',file:'broker-2.png',plugin:'powertac-visualizer')}" height="64px" width="64px"></img>
-									<div>Broker 2</div>
-							</div>
-							<div class="image">
-								<img src="${resource(dir:'images/brokers/',file:'broker-3.png',plugin:'powertac-visualizer')}" height="64px" width="64px"></img>
-								<div>Broker 3</div>
-							</div>
-							<div class="image">
-								<img src="${resource(dir:'images/brokers/',file:'broker-4.png',plugin:'powertac-visualizer')}" height="64px" width="64px"></img>
-								<div>Broker 4</div>
-							</div>
-						</div>
-							<div class="broker_img">
-								<div class="image">
-									<img src="${resource(dir:'images/brokers/',file:'broker-5.png',plugin:'powertac-visualizer')}" height="64px" width="64px"></img>
-									<div>Broker 5</div>
-								</div>
-								<div class="image">
-									<img src="${resource(dir:'images/brokers/',file:'broker-6.png',plugin:'powertac-visualizer')}" height="64px" width="64px"></img>
-									<div>Broker 6</div>
-								</div>
-								<div class="image">
-									<img src="${resource(dir:'images/brokers/',file:'broker-7.png',plugin:'powertac-visualizer')}" height="64px" width="64px"></img>
-									<div>Broker 7</div>
-								</div>
-								<div class="image">
-									<img src="${resource(dir:'images/brokers/',file:'broker-8.png',plugin:'powertac-visualizer')}" height="64px" width="64px"></img>
-									<div>Broker 8</div>
-								</div>
-							</div>
-						</div>
+					<div>
+						<p> Quick broker overview. Additional info will be shown in addition to icons.</p>
+					</div>
 				</div>
 
 				<div id="forecast" class="accordion">
 					<h3><a href="#">Weather report</a></h3>
 					<div>
-						<!--<g:weatherReport />-->
+						<g:weatherReport />
 					</div>
 				</div>
 			</div>

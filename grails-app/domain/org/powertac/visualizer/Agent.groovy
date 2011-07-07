@@ -8,7 +8,7 @@ class Agent {
     
     String username
     BigDecimal balance = 0.0 //TODO: Check the brokers starting funds
-    List cashHistory = []
+    List balanceHistory = []
 
     static constraints = {
     }
