@@ -132,7 +132,7 @@
 				<div id="forecast" class="accordion">
 					<h3><a href="#">Weather report</a></h3>
 					<div>
-						<g:weatherReport />
+						<!--<g:weatherReport />-->
 					</div>
 				</div>
 			</div>
