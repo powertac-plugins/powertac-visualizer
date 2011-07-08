@@ -4,6 +4,10 @@ package org.powertac.visualizer
  * Tag library that is used to generate the dynamic information from
  * MessagingService.groovy to the _main.gsp of the visualizer plugin
  */
+ 
+ /**
+  * IMPORTANT NOTE: Don't forget to escape quotes (") and dollar signs ($).
+  */
 class GameInfoTagLib {
     
     def MessagingService
@@ -52,11 +56,32 @@ class GameInfoTagLib {
 			out << agent.username
 			out << "\">"
 			
-			// TODO: Here goes agent info extraction.
-			out << agent.balanceHistory
+			/**
+			 * TODO: Here goes agent info stuff, flot code is combined also with
+			 * the flotPlotData tag below
+			 */
+			out << "<h3>Broker balance history:</h3>"
+			out << "\n<div id=\"" + agent.username + "balanceHistoryGraph" + "\" style=\"width:450px; height:200px;\"></div>\n"
 			
 			out << "</div>\n"
 		}
+	}
+	
+	def flotPlotData = {
+
+		for (agent in MessagingService.agents) {
+			out << "var " + agent.username + "balanceHistory = \n"
+			out << agent.balanceHistory
+			out << ";\n\n"
+			
+			out << "\$.plot(\$(\"" + "#" + agent.username + "balanceHistoryGraph" + "\"), [\n"
+			out << "	{\n"
+			out << "		data: " + agent.username + "balanceHistory,\n"
+			out << "		lines: { show: true }\n"
+			out << "	}\n"
+			out << "]);\n"
+		}
+
 	}
 	
 	/**

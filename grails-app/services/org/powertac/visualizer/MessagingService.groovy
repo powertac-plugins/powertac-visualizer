@@ -28,6 +28,8 @@ class MessagingService implements VisualizationListener, InitializationService {
 	List customers = []
 	
 	WeatherReport weatherReport
+	
+	//Boolean competitionRunning = false
 
     @Override
     void setDefaults() {
@@ -105,7 +107,7 @@ class MessagingService implements VisualizationListener, InitializationService {
 					for (agent in agents) {
 						if (agent.username == removeSpaces(message.broker.username)) {
 							agent.balance = message.balance
-							agent.balanceHistory.add(agent.balance)
+							agent.balanceHistory.add([timeslotNum, agent.balance])
 						}
 					}
 				}		
@@ -117,6 +119,7 @@ class MessagingService implements VisualizationListener, InitializationService {
 			customers.add(customerInstance)
 			//customerInstance.save()
 		} else if (msg instanceof Competition) {
+			//competitionRunning = true
             competitionName = msg.name
             competitionId = msg.id
             brokerList = msg.brokers

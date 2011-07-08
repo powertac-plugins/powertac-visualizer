@@ -2,7 +2,7 @@
 <html>
 	<head>
 	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-		<title>PowerTAC Visualizer - work in progress</title>
+		<title>PowerTAC Visualizer</title>
 		<link type="text/css" href="${resource(dir:'css',file:'style.css',plugin:'powertac-visualizer')}" rel="stylesheet" />
         <link type="text/css" href="${resource(dir:'css/south-street/',file:'jquery-ui-1.8.13.custom.css',plugin:'powertac-visualizer')}" rel="stylesheet" />
 		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
@@ -20,51 +20,10 @@
 			// Tabs
 			$(".tabs").tabs();
 			
-			// Progressbar
-			$("#progressbar").progressbar({
-				value: 68 
-			});
-			
 			// Flot code
 			$(function () {
-				var data1 = []
-				for (var i = 0; i < 15; i += 0.5) {
-						data1.push([i, i]);
-				}
-					
-				var data2 = []
-				for (var i = 0; i < 15; i += 0.5) {
-					data2.push([i, Math.sqrt(i * 10)]);
-				}
-					
-				var data3 = []
-				for (var i = 0; i < 15; i += 0.5) {
-					data3.push([i, Math.cos(i)]);
-				}
-					
-				$.plot($("#graph1"), [
-					{
-						data: data1,
-						lines: { show: true }
-					}
-				]);
-					
-				$.plot($("#graph2"), [
-					{
-						data: data2,
-						lines: { show: true }
-					}
-				]);
-					
-				$.plot($("#graph3"), [
-					{
-						data: data3,
-						lines: { show: true }
-						}
-				]);
-					
-				$(".tickLabels").css("position","static");
-					
+				<g:flotPlotData />
+				$(".tickLabels").css("position","static");		
 			});
 			//return false;
 		});

@@ -67,7 +67,7 @@ not be updated at all.
 					{
 						data: data3,
 						lines: { show: true }
-						}
+					}
 				]);
 					
 				$(".tickLabels").css("position","static");
