@@ -15,6 +15,8 @@ class GameInfoTagLib {
 	def agent
 	def customer
 	
+	Integer stupidCounter = 0
+	
 	/** 
 	 * A simple tag for testing purposes
 	 */
@@ -25,12 +27,49 @@ class GameInfoTagLib {
 		}
 	}
     
+	/**
+	 * Tag for competition information in the header
+	 */
     def gameInformation = {
-        out << "<h3>Competition name:</h3>"
+        out << "\n<h3>Competition name:</h3>"
         out << MessagingService.competitionName
-        out << "<h3>Competition id:</h3>"
+        out << "\n<h3>Competition id:</h3>"
         out << MessagingService.competitionId
     }
+	
+	/**
+	 * Taglibs for broker overview, broker list and a comparative graph
+	 */
+	def overviewBrokerList = {
+		for (agent in MessagingService.agents) {
+			out << "\n<h3>" + agent.username + "</h3>"
+			out << "\nCash position: " + agent.balance
+		}
+	}
+	
+	def comparativeGraphFlotData = {
+		out << "\n\$.plot(\$(\"#brokerComparativeGraph\"), ["
+		for (agent in MessagingService.agents) {
+			out << "\n{label: \"" + agent.username + "\", "
+			out << "data: " + agent.username + "balanceHistory" + "}"
+			if (stupidCounter + 1 < MessagingService.agents.size()) {
+				out << ","
+				stupidCounter += 1
+			}
+			stupidCounter = 0
+		}
+		out << "\n], {"
+		out << "\nseries: {"
+		out << "\n	lines: {show: true}"
+		out << "\n}"
+		out << "});"
+	}
+	
+	def overviewComparativeGraph = {
+		out << "<div>&nbsp;</div>"
+		out << "<h3>Broker cash position comparison:</h3><br />"
+		out << "\n<div id=\"brokerComparativeGraph\" style=\"width:420px; height:250px;\"></div>\n"
+	}
 	
 	/**
 	 * This taglib will generate agent tabs in the visualizer
@@ -60,8 +99,11 @@ class GameInfoTagLib {
 			 * TODO: Here goes agent info stuff, flot code is combined also with
 			 * the flotPlotData tag below
 			 */
-			out << "<h3>Broker balance history:</h3>"
-			out << "\n<div id=\"" + agent.username + "balanceHistoryGraph" + "\" style=\"width:450px; height:200px;\"></div>\n"
+			out << "\n<h3>Broker balance:</h3> "
+			out << agent.balance
+			out << "<div>&nbsp;</div>"
+			out << "\n<h3>Broker balance history:</h3>"
+			out << "\n<div id=\"" + agent.username + "balanceHistoryGraph" + "\" style=\"width:450px; height:300px;\"></div>\n"
 			
 			out << "</div>\n"
 		}
@@ -107,7 +149,10 @@ class GameInfoTagLib {
 			out << "\">"
 			
 			// TODO: Here goes customer info extraction.
-			out << "More information incoming."
+			out << "\n<h3>Customer type: </h3>"
+			out << customer.type
+			out << "\n<h3>Population: </h3>"
+			out << customer.population
 			
 			out << "</div>\n"
 		}

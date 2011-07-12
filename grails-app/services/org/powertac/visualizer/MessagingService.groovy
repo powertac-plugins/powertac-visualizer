@@ -78,14 +78,14 @@ class MessagingService implements VisualizationListener, InitializationService {
 		 * The following code is used to print the messages and their classes
 		 * that the visualizer receives.
 		 */ 
-		// if (msg instanceof ArrayList) {
-			// println "Arraylist of -> "
-			// for (i in msg) {
-				// println " >> " + msg[0].getClass()
-			// }
-		// } else {
-			// println "New message >> " + msg.getClass()
-		// }
+		if (msg instanceof ArrayList) {
+			println "Arraylist of -> "
+			for (i in msg) {
+				println " >> " + i.getClass()
+			}
+		} else {
+			println "New message >> " + msg.getClass()
+		}
 		
 		/**
 		 * Check the message types and parse them
@@ -116,6 +116,8 @@ class MessagingService implements VisualizationListener, InitializationService {
 			def customer = msg.customer
 			def customerInstance = new Customer(name: removeSpaces(customer.name))
 			//println "customer : " + customerInstance.name
+			customerInstance.type = customer.customerType
+			customerInstance.population = customer.population
 			customers.add(customerInstance)
 			//customerInstance.save()
 		} else if (msg instanceof Competition) {

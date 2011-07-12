@@ -9,6 +9,7 @@ class Customer {
 
 	String name
 	CustomerType type
+	Integer population
 	
 	/**
  	 * TODO: Add more useful information

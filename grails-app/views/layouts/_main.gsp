@@ -23,6 +23,7 @@
 			// Flot code
 			$(function () {
 				<g:flotPlotData />
+				<g:comparativeGraphFlotData />
 				$(".tickLabels").css("position","static");		
 			});
 			//return false;
@@ -48,7 +49,8 @@
 				<div id="overview" class="accordion">
 					<h3><a href="#">Broker overview</a></h3>
 					<div>
-						<p> Quick broker overview. Additional info will be shown in addition to icons.</p>
+						<g:overviewBrokerList />
+						<g:overviewComparativeGraph />
 					</div>
 				</div>
 
