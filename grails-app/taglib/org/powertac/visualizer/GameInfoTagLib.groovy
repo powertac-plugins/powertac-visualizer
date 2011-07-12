@@ -105,6 +105,16 @@ class GameInfoTagLib {
 			out << "\n<h3>Broker balance history:</h3>"
 			out << "\n<div id=\"" + agent.username + "balanceHistoryGraph" + "\" style=\"width:450px; height:300px;\"></div>\n"
 			
+			out << "\n<p>&nbsp;</p>"
+			out << "\n<b>Current balancing quantity: </b>" + agent.balancingQuantity + "<br />"
+			out << "\n<b>Balancing quantity mean: </b>" + agent.balancingQuantityMean + "<br />"
+			out << "\n<p>&nbsp;</p>"
+			out << "\n<h3>Balancing quantity history:</h3>"
+			out << "\n<div id=\"" + agent.username + "balancingQuantityHistoryGraph" + "\" style=\"width:450px; height:200px;\"></div>\n"
+			out << "\n<p>&nbsp;</p>"
+			out << "\n<b>Current balancing charge: </b>" + agent.balancingCharge + "<br />"
+			out << "\n<b>Balancing charge mean: </b>" + agent.balancingChargeMean + "<br />"
+			
 			out << "</div>\n"
 		}
 	}
@@ -115,6 +125,17 @@ class GameInfoTagLib {
 			out << "var " + agent.username + "balanceHistory = \n"
 			out << agent.balanceHistory
 			out << ";\n\n"
+			
+			out << "var " + agent.username + "balancingQuantityHistory = \n"
+			out << agent.balancingQuantityHistory
+			out << ";\n\n"
+			
+			out << "\$.plot(\$(\"" + "#" + agent.username + "balancingQuantityHistoryGraph" + "\"), [\n"
+			out << "	{\n"
+			out << "		data: " + agent.username + "balancingQuantityHistory,\n"
+			out << "		lines: { show: true }\n"
+			out << "	}\n"
+			out << "]);\n"
 			
 			out << "\$.plot(\$(\"" + "#" + agent.username + "balanceHistoryGraph" + "\"), [\n"
 			out << "	{\n"
