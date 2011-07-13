@@ -17,6 +17,8 @@ class GameInfoTagLib {
 	
 	Integer stupidCounter = 0
 	
+	String cloudIcon = ""
+	
 	/** 
 	 * A simple tag for testing purposes
 	 */
@@ -99,10 +101,10 @@ class GameInfoTagLib {
 			 * TODO: Here goes agent info stuff, flot code is combined also with
 			 * the flotPlotData tag below
 			 */
-			out << "\n<h3>Broker balance:</h3> "
+			out << "\n<h3>Broker cash position:</h3> "
 			out << agent.balance
 			out << "<div>&nbsp;</div>"
-			out << "\n<h3>Broker balance history:</h3>"
+			out << "\n<h3>Broker cash position history:</h3>"
 			out << "\n<div id=\"" + agent.username + "balanceHistoryGraph" + "\" style=\"width:450px; height:300px;\"></div>\n"
 			
 			out << "\n<p>&nbsp;</p>"
@@ -119,12 +121,23 @@ class GameInfoTagLib {
 		}
 	}
 	
+	
+	/**
+	 * Tag for generating flot javascript code, watch for special characters
+	 */
 	def flotPlotData = {
 
 		for (agent in MessagingService.agents) {
 			out << "var " + agent.username + "balanceHistory = \n"
 			out << agent.balanceHistory
 			out << ";\n\n"
+			
+			out << "\$.plot(\$(\"" + "#" + agent.username + "balanceHistoryGraph" + "\"), [\n"
+			out << "	{\n"
+			out << "		data: " + agent.username + "balanceHistory,\n"
+			out << "		lines: { show: true }\n"
+			out << "	}\n"
+			out << "]);\n"
 			
 			out << "var " + agent.username + "balancingQuantityHistory = \n"
 			out << agent.balancingQuantityHistory
@@ -133,13 +146,6 @@ class GameInfoTagLib {
 			out << "\$.plot(\$(\"" + "#" + agent.username + "balancingQuantityHistoryGraph" + "\"), [\n"
 			out << "	{\n"
 			out << "		data: " + agent.username + "balancingQuantityHistory,\n"
-			out << "		lines: { show: true }\n"
-			out << "	}\n"
-			out << "]);\n"
-			
-			out << "\$.plot(\$(\"" + "#" + agent.username + "balanceHistoryGraph" + "\"), [\n"
-			out << "	{\n"
-			out << "		data: " + agent.username + "balanceHistory,\n"
 			out << "		lines: { show: true }\n"
 			out << "	}\n"
 			out << "]);\n"
@@ -181,18 +187,83 @@ class GameInfoTagLib {
 	
 	/**
 	 * Weather report taglib
-	 * TODO: Adjust the icons according to the possible values of weather report
+	 * TODO: BIG NOTICE - due to the way grails works, there is no way to
+	 * dynamically generate images via 'resource' tag. Therefore, links to the
+	 * images here are static and WILL HAVE TO BE CHANGED once the visualizer
+	 * becomes separate from the server.
 	 */
 	 def weatherReport = {
-		out << "<h3>Current timeslot: </h3>\n"
-		out << MessagingService.weatherReport.currentTimeslot
-		out << "\n<h3>Temperature: </h3>"
+		out << "<h3>Current time:</h3>\n"
+		out << "<div style=\"font-size:16px;\">"
+		out << MessagingService.weatherReport.currentTimeslot.startInstant.toDate()
+		out << "</div>"
+		out << "\n<h3>Temperature:</h3>"
+		out << "<div style=\"font-size:16px;\">"
 		out << MessagingService.weatherReport.temperature
-		out << "\n<h3>Wind speed: </h3>"
-		out << MessagingService.weatherReport.windSpeed
-		out << "\n<h3>Wind direction: </h3>"
-		out << MessagingService.weatherReport.windDirection
-		out << "\n<h3>Cloud cover: </h3>"
-		out << MessagingService.weatherReport.cloudCover
+		out << "</div>"
+		out << "\n<h3>Wind direction and speed:</h3>"
+		def windDir = MessagingService.weatherReport.windDirection
+		/**
+		 * TODO: These are the directories that need to be taken care of.
+		 */
+		out << "<div style=\"font-size:16px;\">"
+		out << "Direction: "
+		if ((windDir > 22.5) & (windDir <= 67.5)) {
+			out << "<img src=\"/powertac-server/plugins/powertac-visualizer-1.0/images/wind/sw.png\"/>"
+		} else if ((windDir > 67.5) & (windDir <= 112.5)) {
+			out << "<img src=\"/powertac-server/plugins/powertac-visualizer-1.0/images/wind/w.png\"/>"
+		} else if ((windDir > 112.5) & (windDir <= 157.5)) {
+			out << "<img src=\"/powertac-server/plugins/powertac-visualizer-1.0/images/wind/nw.png\"/>"
+		} else if ((windDir > 157.5) & (windDir <= 202.5)) {
+			out << "<img src=\"/powertac-server/plugins/powertac-visualizer-1.0/images/wind/n.png\"/>"
+		} else if ((windDir > 202.5) & (windDir <= 247.5)) {
+			out << "<img src=\"/powertac-server/plugins/powertac-visualizer-1.0/images/wind/ne.png\"/>"
+		} else if ((windDir > 247.5) & (windDir <= 292.5)) {
+			out << "<img src=\"/powertac-server/plugins/powertac-visualizer-1.0/images/wind/e.png\"/>"
+		} else if ((windDir > 292.5) & (windDir <= 337.5)) {
+			out << "<img src=\"/powertac-server/plugins/powertac-visualizer-1.0/images/wind/se.png\"/>"
+		} else if ((windDir > 337.5) | (windDir <= 22.5)) {
+			out << "<img src=\"/powertac-server/plugins/powertac-visualizer-1.0/images/wind/s.png\"/>"
+		} else {
+			out << "Unknown"
+		}
+		out << "(" + windDir + ")<br />"
+		
+		out << "Speed: " + MessagingService.weatherReport.windSpeed
+		out << "</div>"
+		
+		out << "<div>"
+		out << "\n<h3>Cloud cover:</h3>"
+		
+		def cloudCov = MessagingService.weatherReport.cloudCover
+		if (cloudCov <= 0.1) {
+			cloudIcon = cloudIcon + "sunny"
+		} else if (cloudCov <= 0.3) {
+			cloudIcon = cloudIcon + "cloudy1"
+		} else if (cloudCov <= 0.5) {
+			cloudIcon = cloudIcon + "cloudy2"
+		} else if (cloudCov <= 0.7) {
+			cloudIcon = cloudIcon + "cloudy3"
+		} else if (cloudCov <= 0.9) {
+			cloudIcon = cloudIcon + "cloudy4"
+		} else if (cloudCov <= 1.0) {
+			cloudIcon = cloudIcon + "overcast"
+		}
+		
+		String time = MessagingService.weatherReport.currentTimeslot.startInstant.toDateTime().getHourOfDay()
+		def hour = time.toInteger()
+		if ((hour > 6) & (hour < 20)) {
+			cloudIcon = cloudIcon + ".png"
+		} else {
+			cloudIcon = cloudIcon + "_night.png"
+		}
+		out << "<div style=\" height:64px; width:100% \">"
+		out << "<img src=\"/powertac-server/plugins/powertac-visualizer-1.0/images/weather/" + cloudIcon + "\"/>"
+		out << "</div>"
+		out << "</div>"
+		cloudIcon = ""
+		out << "<div style=\"font-size:16px;\">"
+		out << "Value: " + MessagingService.weatherReport.cloudCover
+		out << "</div>"
 	 }
 }

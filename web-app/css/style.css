@@ -161,7 +161,7 @@ body {
 	}
 
 /* Forecast fix (min-height) */
-#forecast div{padding:2px 2px 8px 2px; min-height:75px;}
+#forecast div{padding:2px 2px 8px 2px; /*min-height:75px;*/}
 	
 /***************/
 /* End styling */
