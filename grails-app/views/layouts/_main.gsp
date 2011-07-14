@@ -39,7 +39,7 @@
 						<div id="logo">
 							<img src="${resource(dir:'images',file:'header-small.png',plugin:'powertac-visualizer')}"/>
 						</div>
-						<div style="float:left">
+						<div style="float:right; text-align:right;">
 							<g:gameInformation />
 						</div>
 				  </div>

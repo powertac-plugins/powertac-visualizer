@@ -28,6 +28,9 @@ class MessagingService implements VisualizationListener, InitializationService {
 	
 	WeatherReport weatherReport
 	
+	BigDecimal totalBalancingSum = 0.0
+	BigDecimal totalChargingSum = 0.0
+	
 	//Boolean competitionRunning = false
 
     @Override
@@ -122,6 +125,9 @@ class MessagingService implements VisualizationListener, InitializationService {
 			 * and then parse the message accordingly
 			 */
 			
+			/**
+			 * Parse every message received according to its class
+			 */
 			for (message in msg) {			
 				if (message instanceof CashPosition) {
 					for (agent in agents) {
@@ -139,12 +145,16 @@ class MessagingService implements VisualizationListener, InitializationService {
 							agent.balancingQuantity = message.quantity
 							agent.balancingQuantityHistory.add([timeslotNum, agent.balancingQuantity])
 							agent.balancingQuantityMean = getMeanAdvanced(agent.balancingQuantityHistory)
+							
+							totalBalancingSum += message.quantity
 							/**
 							 * Process the balancing charges
 							 */
 							agent.balancingCharge = message.charge
 							agent.balancingChargeHistory.add(agent.balancingCharge)
 							agent.balancingChargeMean = getMeanSimple(agent.balancingChargeHistory)
+							
+							totalChargingSum += message.charge
 						}
 					}
 				}				
@@ -155,22 +165,17 @@ class MessagingService implements VisualizationListener, InitializationService {
 			//println "customer : " + customerInstance.name
 			customerInstance.type = customer.customerType
 			customerInstance.population = customer.population
+			customerInstance.multiContracting = customer.multiContracting
+			customerInstance.canNegotiate = customer.canNegotiate
+			customerInstance.powerTypes = customer.powerTypes
 			customers.add(customerInstance)
-			//customerInstance.save()
 		} else if (msg instanceof Competition) {
-			//competitionRunning = true
             competitionName = msg.name
             competitionId = msg.id
             brokerList = msg.brokers
             for (broker in brokerList) {
-                /** 
-				 * TODO: Create an instance of agent for every broker in the 
-				 * message
-				 * ISSUE: Brokers are only strings, not broker instances
-				 */
                 def agentInstance = new Agent(username: removeSpaces(broker))
                 agents.add(agentInstance)
-				//agentInstance.save()
             }
         } 
     }
