@@ -81,7 +81,7 @@ body {
 	background-image: url("../images/background.png");
 	background-repeat:no-repeat;
 	background-attachment:fixed;
-	background-position: right bottom;
+	background-position: left bottom;
 }
 
 	h1 {
@@ -106,6 +106,7 @@ body {
 			height: 75px; 
 			position: relative; 
 			float: left;
+			margin-right: 5px;
 		}
 	#content {
 		background: #FFFFFF; 
@@ -149,12 +150,18 @@ body {
 
 /* jQueryUI overrides */
 
-	.accordion div{
+	.accordion > div {
 		padding:8px;
+	}
+	
+	td.legendLabel {
+		display:table-cell;
+		vertical-align:middle;
+		padding-left: 2px;
 	}
 
 /* Forecast fix (min-height) */
-#forecast div{padding:2px 2px 8px 2px; min-height:75px;}
+#forecast div{padding:2px 2px 8px 2px; /*min-height:75px;*/}
 	
 /***************/
 /* End styling */

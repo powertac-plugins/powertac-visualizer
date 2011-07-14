@@ -7,8 +7,16 @@ package org.powertac.visualizer
 class Agent {
     
     String username
-    BigDecimal balance = 0.0 //TODO: Check the brokers starting funds
+    BigDecimal balance = 0.0
     List balanceHistory = []
+	
+	BigDecimal balancingQuantity
+	BigDecimal balancingQuantityMean
+	List balancingQuantityHistory = []
+	
+	BigDecimal balancingCharge
+	BigDecimal balancingChargeMean
+	List balancingChargeHistory = []
 
     static constraints = {
     }

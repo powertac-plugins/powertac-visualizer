@@ -2,14 +2,13 @@ package org.powertac.visualizer
 
 import org.powertac.common.interfaces.VisualizationListener
 import org.powertac.common.interfaces.InitializationService
+import org.powertac.common.BalancingTransaction
 import org.powertac.common.Broker
 import org.powertac.common.CashPosition
 import org.powertac.common.Competition
 import org.powertac.common.CustomerInfo
 import org.powertac.common.WeatherReport
-
 import org.powertac.common.command.CustomerBootstrapData
-
 import org.powertac.common.msg.TimeslotUpdate
 
 class MessagingService implements VisualizationListener, InitializationService {
@@ -65,7 +64,28 @@ class MessagingService implements VisualizationListener, InitializationService {
 	
 		return spacelessName
 	}
-
+	
+	/**
+	 * This method returns the mean from the values in a ONE-dimensional field
+	 */
+	BigDecimal getMeanSimple(list) {
+		def sum = 0
+		for (item in list) {
+			sum += item
+		}
+		return (sum/list.size())
+	}
+	
+	/**
+	 * This method returns the mean from the values in a TWO-dimensional field
+	 */
+	BigDecimal getMeanAdvanced(list) {
+		def sum = 0
+		for (item in list) {
+			sum += item[0]
+		}
+		return (sum/list.size())
+	}
 	
 	/**
      * Parse the initial message and collect information about brokers
@@ -78,14 +98,14 @@ class MessagingService implements VisualizationListener, InitializationService {
 		 * The following code is used to print the messages and their classes
 		 * that the visualizer receives.
 		 */ 
-		// if (msg instanceof ArrayList) {
-			// println "Arraylist of -> "
-			// for (i in msg) {
-				// println " >> " + msg[0].getClass()
-			// }
-		// } else {
-			// println "New message >> " + msg.getClass()
-		// }
+		if (msg instanceof ArrayList) {
+			println "Arraylist of -> "
+			for (i in msg) {
+				println " >> " + i.getClass()
+			}
+		} else {
+			println "New message >> " + msg.getClass()
+		}
 		
 		/**
 		 * Check the message types and parse them
@@ -110,12 +130,31 @@ class MessagingService implements VisualizationListener, InitializationService {
 							agent.balanceHistory.add([timeslotNum, agent.balance])
 						}
 					}
-				}		
+				} else if (message instanceof BalancingTransaction) {
+					for (agent in agents) {
+						if (agent.username == removeSpaces(message.broker.username)) {
+							/**
+							 * Process the balancing quantities
+							 */
+							agent.balancingQuantity = message.quantity
+							agent.balancingQuantityHistory.add([timeslotNum, agent.balancingQuantity])
+							agent.balancingQuantityMean = getMeanAdvanced(agent.balancingQuantityHistory)
+							/**
+							 * Process the balancing charges
+							 */
+							agent.balancingCharge = message.charge
+							agent.balancingChargeHistory.add(agent.balancingCharge)
+							agent.balancingChargeMean = getMeanSimple(agent.balancingChargeHistory)
+						}
+					}
+				}				
 			}
 		} else if (msg instanceof CustomerBootstrapData) {
 			def customer = msg.customer
 			def customerInstance = new Customer(name: removeSpaces(customer.name))
 			//println "customer : " + customerInstance.name
+			customerInstance.type = customer.customerType
+			customerInstance.population = customer.population
 			customers.add(customerInstance)
 			//customerInstance.save()
 		} else if (msg instanceof Competition) {
