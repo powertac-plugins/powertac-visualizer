@@ -74,8 +74,9 @@ a img {
 
 /* Main css */
 
-body { 
-	font: 70% "Verdana", sans-serif; 
+body {
+	/*If fonts are too small for the projector, increase to 100%*/
+	font: 75% "Verdana", sans-serif; 
 	margin-left: 35px;
 	background: #fff;  
 	background-image: url("../images/background.png");

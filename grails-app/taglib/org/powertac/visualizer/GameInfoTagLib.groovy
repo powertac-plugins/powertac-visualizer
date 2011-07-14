@@ -33,20 +33,27 @@ class GameInfoTagLib {
 	 * Tag for competition information in the header
 	 */
     def gameInformation = {
-        out << "\n<h3>Competition name:</h3>"
+        out << "\n<b>Competition name:</b><br />"
         out << MessagingService.competitionName
-        out << "\n<h3>Competition id:</h3>"
+        out << "\n<br /><b>Competition id:</b><br />"
         out << MessagingService.competitionId
+		out << "\n<br /><b>Current timeslot: </b>" + MessagingService.timeslotNum
     }
 	
 	/**
 	 * Taglibs for broker overview, broker list and a comparative graph
 	 */
 	def overviewBrokerList = {
+	out << "<h2>Brokers participating:</h2>"
 		for (agent in MessagingService.agents) {
-			out << "\n<h3>" + agent.username + "</h3>"
+			out << "\n<b>" + agent.username + "</b><br />"
 			out << "\nCash position: " + agent.balance
+			out << "<br />"
 		}
+		out << "<div>&nbsp;</div>"
+		out << "<h2>Game statistics:</h2>"
+		out << "\n<b>Total balancing amount: </b>" + MessagingService.totalBalancingSum + "<br />"
+		out << "\n<b>Total charging amount: </b>" + MessagingService.totalChargingSum + "<br />"
 	}
 	
 	def comparativeGraphFlotData = {
@@ -69,8 +76,8 @@ class GameInfoTagLib {
 	
 	def overviewComparativeGraph = {
 		out << "<div>&nbsp;</div>"
-		out << "<h3>Broker cash position comparison:</h3><br />"
-		out << "\n<div id=\"brokerComparativeGraph\" style=\"width:420px; height:250px;\"></div>\n"
+		out << "<b>Broker cash position comparison:</b><br />"
+		out << "\n<div id=\"brokerComparativeGraph\" style=\"width:440px; height:250px;\"></div>\n"
 	}
 	
 	/**
@@ -101,17 +108,20 @@ class GameInfoTagLib {
 			 * TODO: Here goes agent info stuff, flot code is combined also with
 			 * the flotPlotData tag below
 			 */
-			out << "\n<h3>Broker cash position:</h3> "
+			out << "\n<b>Broker cash position:</b> "
+			out << "<br />"
 			out << agent.balance
 			out << "<div>&nbsp;</div>"
-			out << "\n<h3>Broker cash position history:</h3>"
+			out << "\n<b>Broker cash position history:</b>"
+			out << "<br />"
 			out << "\n<div id=\"" + agent.username + "balanceHistoryGraph" + "\" style=\"width:450px; height:300px;\"></div>\n"
 			
 			out << "\n<p>&nbsp;</p>"
 			out << "\n<b>Current balancing quantity: </b>" + agent.balancingQuantity + "<br />"
 			out << "\n<b>Balancing quantity mean: </b>" + agent.balancingQuantityMean + "<br />"
 			out << "\n<p>&nbsp;</p>"
-			out << "\n<h3>Balancing quantity history:</h3>"
+			out << "\n<b>Balancing quantity history:</b>"
+			out << "<br />"
 			out << "\n<div id=\"" + agent.username + "balancingQuantityHistoryGraph" + "\" style=\"width:450px; height:200px;\"></div>\n"
 			out << "\n<p>&nbsp;</p>"
 			out << "\n<b>Current balancing charge: </b>" + agent.balancingCharge + "<br />"
@@ -176,10 +186,20 @@ class GameInfoTagLib {
 			out << "\">"
 			
 			// TODO: Here goes customer info extraction.
-			out << "\n<h3>Customer type: </h3>"
+			out << "\n<b>Customer type: </b>"
 			out << customer.type
-			out << "\n<h3>Population: </h3>"
+			out << "<br />"
+			out << "\n<b>Population: </b>"
 			out << customer.population
+			out << "<br />"
+			out << "\n<b>Multicontracting: </b>"
+			out << customer.multiContracting
+			out << "<br />"
+			out << "\n<b>Can negotiate: </b>"
+			out << customer.canNegotiate
+			out << "<br />"
+			out << "\n<b>Power types:</b>"
+			out << customer.powerTypes
 			
 			out << "</div>\n"
 		}
@@ -193,15 +213,18 @@ class GameInfoTagLib {
 	 * becomes separate from the server.
 	 */
 	 def weatherReport = {
-		out << "<h3>Current time:</h3>\n"
+		out << "<b>Current time:</b>\n"
+		out << "<br />"
 		out << "<div style=\"font-size:16px;\">"
 		out << MessagingService.weatherReport.currentTimeslot.startInstant.toDate()
 		out << "</div>"
-		out << "\n<h3>Temperature:</h3>"
+		out << "\n<b>Temperature:</b>"
+		out << "<br />"
 		out << "<div style=\"font-size:16px;\">"
 		out << MessagingService.weatherReport.temperature
 		out << "</div>"
-		out << "\n<h3>Wind direction and speed:</h3>"
+		out << "\n<b>Wind direction and speed:</b>"
+		out << "<br />"
 		def windDir = MessagingService.weatherReport.windDirection
 		/**
 		 * TODO: These are the directories that need to be taken care of.
@@ -233,7 +256,7 @@ class GameInfoTagLib {
 		out << "</div>"
 		
 		out << "<div>"
-		out << "\n<h3>Cloud cover:</h3>"
+		out << "\n<b>Cloud cover:</b><br />"
 		
 		def cloudCov = MessagingService.weatherReport.cloudCover
 		if (cloudCov <= 0.1) {
@@ -248,6 +271,8 @@ class GameInfoTagLib {
 			cloudIcon = cloudIcon + "cloudy4"
 		} else if (cloudCov <= 1.0) {
 			cloudIcon = cloudIcon + "overcast"
+		} else {
+			cloudIcon = cloudIcon + "dunno"
 		}
 		
 		String time = MessagingService.weatherReport.currentTimeslot.startInstant.toDateTime().getHourOfDay()
