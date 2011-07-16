@@ -96,9 +96,10 @@ class MessagingService implements VisualizationListener, InitializationService
    * (agents) and other relevant info about the competition
    */
   @Override
+  // don't worry about unknown message types - there are a great many of them.
   public void receiveMessage(msg) 
   {
-    log.error("unknown message type $msg")
+  //  log.error("unknown message type $msg")
   }
   
   void receiveMessage (SimStart msg)
@@ -109,7 +110,7 @@ class MessagingService implements VisualizationListener, InitializationService
     totalBalancingSum = 0.0
     totalChargingSum = 0.0
 
-    timeslotNum = 1;
+    timeslotNum = 1
 
     agents = []
     customers = []
@@ -202,7 +203,7 @@ class MessagingService implements VisualizationListener, InitializationService
   {
     // recursively parse contained messages by class
     for (message in msg) {
-      receiveMessage(msg)
+      receiveMessage(message)
     }
   }
 }
