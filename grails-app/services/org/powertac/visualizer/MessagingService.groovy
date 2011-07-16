@@ -115,20 +115,20 @@ class MessagingService implements VisualizationListener, InitializationService {
 		 * Check the message types and parse them
 		 */
 		if (msg instanceof SimStart) {
-		/**
-		 * Clear out the variables for starting of the simulation
-		 */
-		totalBalancingSum = 0.0
-		totalChargingSum = 0.0
-		
-		timeslotNum = 1;
-		
-		agents = []
-		customers = []
-		
-		competitionName = ""
-		competitionId = ""
-		brokerList = []
+			/**
+			 * Clear out the variables for starting of the simulation
+			 */
+			totalBalancingSum = 0.0
+			totalChargingSum = 0.0
+			
+			timeslotNum = 1;
+			
+			agents = []
+			customers = []
+			
+			competitionName = ""
+			competitionId = ""
+			brokerList = []
 		} else if (msg instanceof WeatherReport) {
 			weatherReport = msg
 		} else if (msg instanceof TimeslotUpdate) {
