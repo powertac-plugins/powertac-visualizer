@@ -132,8 +132,8 @@ class MessagingService implements VisualizationListener, InitializationService {
       // There must be a better way
 	  // Feel free to implement a better way if you figure a way around spaces 
 	  // in names breaking the HTML layout
-      if (agent.username == removeSpaces(message.broker.username)) {
-        agent.balance = message.balance
+      if (agent.username == removeSpaces(msg.broker.username)) {
+        agent.balance = msg.balance
         agent.balanceHistory.add([timeslotNum, agent.balance])
       }
     }
@@ -141,26 +141,26 @@ class MessagingService implements VisualizationListener, InitializationService {
 
   void receiveMessage (BalancingTransaction msg) {
     for (agent in agents) {
-      if (agent.username == removeSpaces(message.broker.username)) {
+      if (agent.username == removeSpaces(msg.broker.username)) {
         /**
          * Process the balancing quantities
          */
-        agent.balancingQuantity = message.quantity
+        agent.balancingQuantity = msg.quantity
         agent.balancingQuantityHistory.add([
           timeslotNum,
           agent.balancingQuantity
         ])
         agent.balancingQuantityMean = getMeanAdvanced(agent.balancingQuantityHistory)
 
-        totalBalancingSum += message.quantity
+        totalBalancingSum += msg.quantity
         /**
          * Process the balancing charges
          */
-        agent.balancingCharge = message.charge
+        agent.balancingCharge = msg.charge
         agent.balancingChargeHistory.add(agent.balancingCharge)
         agent.balancingChargeMean = getMeanSimple(agent.balancingChargeHistory)
 
-        totalChargingSum += message.charge
+        totalChargingSum += msg.charge
       }
     }
   }
