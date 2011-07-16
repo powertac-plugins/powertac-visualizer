@@ -9,6 +9,7 @@ import org.powertac.common.Competition
 import org.powertac.common.CustomerInfo
 import org.powertac.common.WeatherReport
 import org.powertac.common.command.CustomerBootstrapData
+import org.powertac.common.command.SimStart
 import org.powertac.common.msg.TimeslotUpdate
 
 class MessagingService implements VisualizationListener, InitializationService {
