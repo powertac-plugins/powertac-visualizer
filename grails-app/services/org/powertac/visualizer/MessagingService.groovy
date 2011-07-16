@@ -22,7 +22,7 @@ class MessagingService implements VisualizationListener, InitializationService {
     def competitionId
     def brokerList
 	
-	def timeslotNum;
+	def timeslotNum = 1;
     
     List agents = []
 	List customers = []
