@@ -65,10 +65,8 @@
 			});
 			//return false;
 		});
-		</script>
 
 		<!-- Autorefresh script -->
-		<script type="text/javascript">
 			//<!--
 			//this variable sets the refresh frequency...
 			var limit="0:10"

@@ -22,7 +22,7 @@ class MessagingService implements VisualizationListener, InitializationService
   def competitionId
   def brokerList
 
-  def timeslotNum;
+  def timeslotNum = 1
 
   List agents = []
   List customers = []
@@ -66,7 +66,6 @@ class MessagingService implements VisualizationListener, InitializationService
     for (word in splitString) {
       spacelessName = spacelessName + word
     }
-
     return spacelessName
   }
 
@@ -127,7 +126,7 @@ class MessagingService implements VisualizationListener, InitializationService
 
   void receiveMessage (TimeslotUpdate msg) 
   {
-    timeslotNum++
+    timeslotNum += 1
   } 
 
   void receiveMessage (CashPosition msg) 
