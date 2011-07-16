@@ -9,6 +9,7 @@ import org.powertac.common.Competition
 import org.powertac.common.CustomerInfo
 import org.powertac.common.WeatherReport
 import org.powertac.common.command.CustomerBootstrapData
+import org.powertac.common.command.SimStart
 import org.powertac.common.msg.TimeslotUpdate
 
 class MessagingService implements VisualizationListener, InitializationService {
@@ -21,7 +22,7 @@ class MessagingService implements VisualizationListener, InitializationService {
     def competitionId
     def brokerList
 	
-	def timeslotNum = 1;
+	def timeslotNum;
     
     List agents = []
 	List customers = []
@@ -101,19 +102,34 @@ class MessagingService implements VisualizationListener, InitializationService {
 		 * The following code is used to print the messages and their classes
 		 * that the visualizer receives.
 		 */ 
-		if (msg instanceof ArrayList) {
-			println "Arraylist of -> "
-			for (i in msg) {
-				println " >> " + i.getClass()
-			}
-		} else {
-			println "New message >> " + msg.getClass()
-		}
+		// if (msg instanceof ArrayList) {
+			// println "Arraylist of -> "
+			// for (i in msg) {
+				// println " >> " + i.getClass()
+			// }
+		// } else {
+			// println "New message >> " + msg.getClass()
+		// }
 		
 		/**
 		 * Check the message types and parse them
 		 */
-		if (msg instanceof WeatherReport) {
+		if (msg instanceof SimStart) {
+			/**
+			 * Clear out the variables for starting of the simulation
+			 */
+			totalBalancingSum = 0.0
+			totalChargingSum = 0.0
+			
+			timeslotNum = 1;
+			
+			agents = []
+			customers = []
+			
+			competitionName = ""
+			competitionId = ""
+			brokerList = []
+		} else if (msg instanceof WeatherReport) {
 			weatherReport = msg
 		} else if (msg instanceof TimeslotUpdate) {
 			timeslotNum++
