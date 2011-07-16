@@ -24,9 +24,6 @@ class GameInfoTagLib {
 	 */
 	def testTag = {
 		out << "Test successful."
-		for (customer in MessagingService.customers) {
-			out << customer.name
-		}
 	}
     
 	/**

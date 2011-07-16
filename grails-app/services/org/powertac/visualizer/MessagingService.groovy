@@ -9,7 +9,7 @@ import org.powertac.common.Competition
 import org.powertac.common.CustomerInfo
 import org.powertac.common.WeatherReport
 import org.powertac.common.command.CustomerBootstrapData
-import org.powertac.common.command.SimStart
+import org.powertac.common.command.SimEnd
 import org.powertac.common.msg.TimeslotUpdate
 
 class MessagingService implements VisualizationListener, InitializationService {
@@ -114,22 +114,7 @@ class MessagingService implements VisualizationListener, InitializationService {
 		/**
 		 * Check the message types and parse them
 		 */
-		if (msg instanceof SimStart) {
-			/**
-			 * Clear out the variables for starting of the simulation
-			 */
-			totalBalancingSum = 0.0
-			totalChargingSum = 0.0
-			
-			timeslotNum = 1;
-			
-			agents = []
-			customers = []
-			
-			competitionName = ""
-			competitionId = ""
-			brokerList = []
-		} else if (msg instanceof WeatherReport) {
+		if (msg instanceof WeatherReport) {
 			weatherReport = msg
 		} else if (msg instanceof TimeslotUpdate) {
 			timeslotNum++
@@ -189,11 +174,28 @@ class MessagingService implements VisualizationListener, InitializationService {
             competitionName = msg.name
             competitionId = msg.id
             brokerList = msg.brokers
+			println msg.brokers
             for (broker in brokerList) {
                 def agentInstance = new Agent(username: removeSpaces(broker))
                 agents.add(agentInstance)
             }
-        } 
+        } else if (msg instanceof SimEnd) {
+			/**
+			 * Clear the variables at the end of the simulation so that they
+			 * don't carry over to the next one
+			 */
+			totalBalancingSum = 0.0
+			totalChargingSum = 0.0
+			
+			timeslotNum = 1;
+			
+			agents = []
+			customers = []
+			
+			competitionName = ""
+			competitionId = ""
+			brokerList = []
+		}
     }
 
 }
