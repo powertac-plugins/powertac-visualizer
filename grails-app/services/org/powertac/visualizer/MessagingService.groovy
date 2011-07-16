@@ -22,7 +22,7 @@ class MessagingService implements VisualizationListener, InitializationService {
     def competitionId
     def brokerList
 	
-	def timeslotNum;
+	def timeslotNum = 1;
     
     List agents = []
 	List customers = []
@@ -132,7 +132,7 @@ class MessagingService implements VisualizationListener, InitializationService {
 		} else if (msg instanceof WeatherReport) {
 			weatherReport = msg
 		} else if (msg instanceof TimeslotUpdate) {
-			timeslotNum++
+			timeslotNum += 1
 		} else if (msg instanceof ArrayList) {
 			/**
 			 * There are a lot of messages sent as ArrayLists, they need to be
