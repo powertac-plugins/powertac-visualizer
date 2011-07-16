@@ -9,11 +9,10 @@ import org.powertac.common.Competition
 import org.powertac.common.CustomerInfo
 import org.powertac.common.WeatherReport
 import org.powertac.common.command.CustomerBootstrapData
-import org.powertac.common.command.SimStart
+import org.powertac.common.command.SimEnd
 import org.powertac.common.msg.TimeslotUpdate
 
-class MessagingService implements VisualizationListener, InitializationService
-{
+class MessagingService implements VisualizationListener, InitializationService {
   static transactional = true
 
   def visualizationProxyService
@@ -97,15 +96,14 @@ class MessagingService implements VisualizationListener, InitializationService
    */
   @Override
   // don't worry about unknown message types - there are a great many of them.
-  public void receiveMessage(msg) 
-  {
+  public void receiveMessage(msg) {
   //  log.error("unknown message type $msg")
   }
   
-  void receiveMessage (SimStart msg)
-  {
+  void receiveMessage (SimEnd msg) {
     /**
-     * Clear out the variables for starting of the simulation
+     * Clear out the variables so that the data doesn't carry over to the next
+	 * round
      */
     totalBalancingSum = 0.0
     totalChargingSum = 0.0
@@ -120,21 +118,20 @@ class MessagingService implements VisualizationListener, InitializationService
     brokerList = []
   }
 
-  void receiveMessage (WeatherReport msg) 
-  {
+  void receiveMessage (WeatherReport msg) {
     weatherReport = msg
   } 
 
-  void receiveMessage (TimeslotUpdate msg) 
-  {
+  void receiveMessage (TimeslotUpdate msg) {
     timeslotNum += 1
   } 
 
-  void receiveMessage (CashPosition msg) 
-  {
+  void receiveMessage (CashPosition msg) {
     for (agent in agents) {
       // JEC - why are we doing this for every incoming message??
       // There must be a better way
+	  // Feel free to implement a better way if you figure a way around spaces 
+	  // in names breaking the HTML layout
       if (agent.username == removeSpaces(message.broker.username)) {
         agent.balance = message.balance
         agent.balanceHistory.add([timeslotNum, agent.balance])
@@ -142,8 +139,7 @@ class MessagingService implements VisualizationListener, InitializationService
     }
   }
 
-  void receiveMessage (BalancingTransaction msg) 
-  {
+  void receiveMessage (BalancingTransaction msg) {
     for (agent in agents) {
       if (agent.username == removeSpaces(message.broker.username)) {
         /**
@@ -169,8 +165,7 @@ class MessagingService implements VisualizationListener, InitializationService
     }
   }
 
-  void receiveMessage (Competition msg) 
-  {
+  void receiveMessage (Competition msg) {
     competitionName = msg.name
     competitionId = msg.id
     brokerList = msg.brokers
@@ -180,8 +175,7 @@ class MessagingService implements VisualizationListener, InitializationService
     }
   }
 
-  void receiveMessage (CustomerBootstrapData msg) 
-  {
+  void receiveMessage (CustomerBootstrapData msg) {
     def customer = msg.customer
     def customerInstance = new Customer(name: removeSpaces(customer.name))
     //println "customer : " + customerInstance.name
@@ -193,14 +187,7 @@ class MessagingService implements VisualizationListener, InitializationService
     customers.add(customerInstance)
   }
 
-  /**
-   * There are a lot of messages sent as ArrayLists, they need to be
-   * parsed with care
-   * The usual procedure is to check the class of the first message
-   * and then parse the message accordingly
-   */
-  void receiveMessage (ArrayList msg)
-  {
+  void receiveMessage (ArrayList msg) {
     // recursively parse contained messages by class
     for (message in msg) {
       receiveMessage(message)

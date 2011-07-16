@@ -8,68 +8,71 @@
 		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
 		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/jquery-ui.min.js"></script>
         <script type="text/javascript" src="${resource(dir:'js',file:'jquery.flot.min.js',plugin:'powertac-visualizer')}"></script>
-		<script type="text/javascript" src="${resource(dir:'js',file:'cookieplugin.js',plugin:'powertac-visualizer')}"</script>
+		<script type="text/javascript" src="${resource(dir:'js',file:'cookieplugin.js',plugin:'powertac-visualizer')}"></script>
 		<!--[if IE]><script language="javascript" type= "${resource(dir:'js',file:'excanvas.min.js',plugin:'powertac-visualizer')}"></script><![endif]-->
 		
 		<!-- Cookies and jQueryUI -->
 		<script type="text/javascript">
-		var active1=$.cookie("active1");
-        if(active1=="0")
-			active1=0;
-        var active2=$.cookie("active2");
-        if(active2=="0")
-			active2=0;
-		var active3=$.cookie("active3");
-		if(active3=="0")
-			active3=0;
-		$(document).ready(function($) {
-			// Accordions
-			$(".accordion").accordion({
-				collapsible:'true'
-				active1 == 1;
+			$(document).ready(function($) {
+			
+				var active1=$.cookie("active1");
+				if(active1 == "0") {
+					active1 = 0;
+				}
+				var active2=$.cookie("active2");
+				if(active2 == "0") {
+					active2 = 0;
+				}
+				var active3=$.cookie("active3");
+				if(active3 == "0") {
+					active3 = 0;
+				}
+				// Accordions
+				$("#overview").accordion({
+					collapsible:'true',
+					active: active1
+				});
+				
+				$( "#overview" ).bind( "accordionchange", function(event, ui) {
+					$.cookie("active1",$( "#overview" ).accordion( "option", "active"));
+					active1=$.cookie("active1");
+				});
+
+				$("#info").accordion({
+					collapsible:'true',
+					active: active2
+				});
+
+				$( "#info" ).bind( "accordionchange", function(event, ui) {
+					$.cookie("active2",$( "#info" ).accordion( "option", "active"));
+					active2=$.cookie("active2");
+				});
+
+				$("#forecast").accordion({
+					collapsible:'true',
+					active: active3
+				});
+
+				$("#forecast").bind( "accordionchange", function(event, ui) {
+					$.cookie("active3",$( "#forecast" ).accordion( "option", "active"));
+					active3=$.cookie("active3");
+				});
+				
+				// Tabs
+				$(".tabs").tabs({ cookie: { expires: 365 }});
+				
+				// Flot code
+				$(function () {
+					<g:flotPlotData />
+					<g:comparativeGraphFlotData />
+					$(".tickLabels").css("position","static");		
+				});
+				//return false;
 			});
 			
-			$( "#overview" ).bind( "accordionchange", function(event, ui) {
-				$.cookie("active1",$( "#overview" ).accordion( "option", "active"));
-				active1=$.cookie("active1");
-			});
-
-		    $("#info").accordion({
-			    collapsible:'true',
-			    active: active2
-		    });
-
-		    $( "#info" ).bind( "accordionchange", function(event, ui) {
-				$.cookie("active2",$( "#info" ).accordion( "option", "active"));
-				active2=$.cookie("active2");
-		    });
-
-		    $("#forecast").accordion({
-				collapsible:'true',
-				active: active3
-		    });
-
-		    $( "#forecast" ).bind( "accordionchange", function(event, ui) {
-				$.cookie("active3",$( "#forecast" ).accordion( "option", "active"));
-				active3=$.cookie("active3");
-		    });
-			
-			// Tabs
-			$(".tabs").tabs({ cookie: { expires: 7 }});
-			
-			// Flot code
-			$(function () {
-				<g:flotPlotData />
-				<g:comparativeGraphFlotData />
-				$(".tickLabels").css("position","static");		
-			});
-			//return false;
-		});
-
-		<!-- Autorefresh script -->
-			//<!--
+			<!-- Yuan's autorefresh script -->
 			//this variable sets the refresh frequency...
-			var limit="0:10"
+			var limit="0:5"
 
 			if (document.images) {
 				var parselimit = limit.split(":")
@@ -98,7 +101,7 @@
 			}
 
 			window.onload = beginrefresh
-			//-->
+			<!-- Yuan's autorefresh script end-->
 		</script>		
 
 	</head>
