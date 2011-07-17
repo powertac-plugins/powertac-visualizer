@@ -70,7 +70,7 @@
 				//return false;
 			});
 			
-			<!-- Yuan's autorefresh script -->
+			// Yuan's autorefresh script
 			//this variable sets the refresh frequency...
 			var limit="0:5"
 
@@ -101,7 +101,6 @@
 			}
 
 			window.onload = beginrefresh
-			<!-- Yuan's autorefresh script end-->
 		</script>		
 
 	</head>
