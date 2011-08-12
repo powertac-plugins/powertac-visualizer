@@ -2,6 +2,7 @@ package org.powertac.visualizer
 
 import org.powertac.common.enumerations.CustomerType
 import org.powertac.common.enumerations.PowerType
+import org.powertac.common.CustomerInfo
 
 /**
  * The visualizer class for storing and recalling customer information
@@ -19,6 +20,11 @@ class Customer {
 	Boolean canNegotiate
 	
 	List<PowerType> powerTypes = []
+
+  CustomerInfo customerInfo
+
+  int powerUsageCounter = 0
+  List powerUsageValues = []
 
     static constraints = {
     }

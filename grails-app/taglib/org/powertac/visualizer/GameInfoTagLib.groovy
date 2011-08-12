@@ -1,5 +1,6 @@
 package org.powertac.visualizer
 
+import org.powertac.common.AbstractCustomer
 /**
  * Tag library that is used to generate the dynamic information from
  * MessagingService.groovy to the _main.gsp of the visualizer plugin
@@ -76,7 +77,13 @@ class GameInfoTagLib {
 	
 	def overviewComparativeGraph = {
 		out << "<div>&nbsp;</div>"
-		out << "<b>Broker cash position comparison:</b><br />"
+		out << "<b>Wholesale price development:</b><br />"
+		out << "\n<div id=\"wholesalePrice\" style=\"width:440px; height:250px;\"></div>\n"
+     	out << "<b>Wholesale trade volume:</b><br />"
+		out << "\n<div id=\"wholesaleVolume\" style=\"width:440px; height:125px;\"></div>\n"
+        out << "<b>Aggregate Load:</b><br />"
+        out << "\n<div id=\"totalLoad\" style=\"width:440px; height:125px;\"></div>\n"
+        out << "<b>Broker cash position comparison:</b><br />"
 		out << "\n<div id=\"brokerComparativeGraph\" style=\"width:440px; height:250px;\"></div>\n"
 	}
 	
@@ -118,7 +125,7 @@ class GameInfoTagLib {
 			
 			out << "\n<p>&nbsp;</p>"
 			out << "\n<b>Current balancing quantity: </b>" + agent.balancingQuantity + "<br />"
-			out << "\n<b>Balancing quantity mean: </b>" + agent.balancingQuantityMean + "<br />"
+			//out << "\n<b>Balancing quantity mean: </b>" + agent.balancingQuantityMean + "<br />"
 			out << "\n<p>&nbsp;</p>"
 			out << "\n<b>Balancing quantity history:</b>"
 			out << "<br />"
@@ -141,18 +148,18 @@ class GameInfoTagLib {
 			out << "var " + agent.username + "balanceHistory = \n"
 			out << agent.balanceHistory
 			out << ";\n\n"
-			
+
 			out << "\$.plot(\$(\"" + "#" + agent.username + "balanceHistoryGraph" + "\"), [\n"
 			out << "	{\n"
 			out << "		data: " + agent.username + "balanceHistory,\n"
 			out << "		lines: { show: true }\n"
 			out << "	}\n"
 			out << "]);\n"
-			
+
 			out << "var " + agent.username + "balancingQuantityHistory = \n"
-			out << agent.balancingQuantityHistory
+			out << agent.balancingChargeHistory
 			out << ";\n\n"
-			
+
 			out << "\$.plot(\$(\"" + "#" + agent.username + "balancingQuantityHistoryGraph" + "\"), [\n"
 			out << "	{\n"
 			out << "		data: " + agent.username + "balancingQuantityHistory,\n"
@@ -161,8 +168,61 @@ class GameInfoTagLib {
 			out << "]);\n"
 		}
 
-	}
-	
+        out << "var Price = \n"
+        out << MessagingService.wholesalePriceHistory
+        out << ";\n\n"
+
+        out << "\$.plot(\$(\"" + "#wholesalePrice\"), [\n"
+        out << "	{\n"
+        out << "		data: Price,\n"
+        out << "		lines: { show: true }\n"
+        out << "	}\n"
+        out << "]);\n"
+
+        out << "var Volume = \n"
+        out << MessagingService.wholesaleVolumeHistory
+        out << ";\n\n"
+
+        out << "\$.plot(\$(\"" + "#wholesaleVolume\"), [\n"
+        out << "	{\n"
+        out << "		data: Volume,\n"
+        out << "		lines: { show: true }\n"
+        out << "	},\n"
+        out << "]);\n"
+
+        out << "var totalLoad = \n"
+        out << MessagingService.totalLoadHistory
+        out << ";\n\n"
+
+        out << "\$.plot(\$(\"" + "#totalLoad\"), [\n"
+        out << "	{\n"
+        out << "		data: totalLoad,\n"
+        out << "		lines: { show: true }\n"
+        out << "	}\n"
+        out << "]);\n"
+
+
+
+        MessagingService.customers.each {Customer c ->
+//      out << "//"
+            //      out << c.name
+            //      out << c.powerUsageCounter
+            //      out << c.powerUsageValues.toString()
+            //      out << "\n"
+            out << "var " + c.name + "PowerHistory = \n"
+            out << c.powerUsageValues
+            out << ";\n\n"
+
+            out << "\$.plot(\$(\"" + "#" + c.name + "PowerHistory" + "\"), [\n"
+            out << "	{\n"
+            out << "		data: " + c.name + "PowerHistory,\n"
+            out << "		lines: { show: true }\n"
+            out << "	}\n"
+            out << "]);\n"
+        }
+
+  }
+
 	/**
 	 * Taglibs for customer tabs
 	 */
@@ -200,7 +260,13 @@ class GameInfoTagLib {
 			out << "<br />"
 			out << "\n<b>Power types:</b>"
 			out << customer.powerTypes
-			
+      out << "<br />"
+      out << "\n<b>Consumption/Production:</b>"
+
+      out << "<div>&nbsp;</div>"
+    out << "\n<div id=\""
+      out << customer.name
+    out << "PowerHistory\" style=\"width:450px; height:200px;\"></div>\n"
 			out << "</div>\n"
 		}
 	}

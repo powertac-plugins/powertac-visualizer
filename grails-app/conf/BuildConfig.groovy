@@ -4,6 +4,7 @@ grails.project.test.reports.dir = "target/test-reports"
 //grails.project.war.file = "target/${appName}-${appVersion}.war"
 grails.plugin.location.powertacCommon = "../powertac-common"
 grails.plugin.location.powertacServerInterface = "../powertac-server-interface"
+grails.plugin.location.powertacHouseholdCustomer= "../powertac-household-customer"
 grails.project.dependency.resolution = {
   // inherit Grails' default dependencies
   inherits("global") {

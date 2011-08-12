@@ -11,6 +11,10 @@ import org.powertac.common.WeatherReport
 import org.powertac.common.command.CustomerBootstrapData
 import org.powertac.common.command.SimEnd
 import org.powertac.common.msg.TimeslotUpdate
+import org.powertac.common.Orderbook
+import org.powertac.common.ClearedTrade
+import org.powertac.common.msg.CustomerReport
+import org.apache.el.lang.ELArithmetic.BigDecimalDelegate
 
 class MessagingService implements VisualizationListener, InitializationService {
   static transactional = true
@@ -24,12 +28,16 @@ class MessagingService implements VisualizationListener, InitializationService {
   def timeslotNum = 1
 
   List agents = []
+  List wholesalePriceHistory = []
+  List wholesaleVolumeHistory = []
+  List totalLoadHistory = []
   List customers = []
 
   WeatherReport weatherReport
 
   BigDecimal totalBalancingSum = 0.0
   BigDecimal totalChargingSum = 0.0
+  BigDecimal totalLoad = 0.0
 
   //Boolean competitionRunning = false
 
@@ -120,11 +128,35 @@ class MessagingService implements VisualizationListener, InitializationService {
 
   void receiveMessage (WeatherReport msg) {
     weatherReport = msg
-  } 
+  }
+
+  void receiveMessage (ClearedTrade msg)
+  {
+    //log.error "received timeslot" + msg.timeslot.serialNumber.toString()
+    //log.error "current timeslot" + timeslotNum
+    if(timeslotNum<25)
+    {
+    if (msg.timeslot.serialNumber==timeslotNum-1)
+    {
+    wholesalePriceHistory.add([timeslotNum,msg.executionPrice])
+    wholesaleVolumeHistory.add([timeslotNum,msg.executionQuantity])
+    }
+    }
+    else
+    {
+    wholesalePriceHistory.add([timeslotNum,msg.executionPrice])
+    wholesaleVolumeHistory.add([timeslotNum,msg.executionQuantity])
+    }
+  }
 
   void receiveMessage (TimeslotUpdate msg) {
+    if (timeslotNum>1)
+    {
+        totalLoadHistory.add([timeslotNum-1,totalLoad])
+        totalLoad = 0
+    }
     timeslotNum += 1
-  } 
+  }
 
   void receiveMessage (CashPosition msg) {
     for (agent in agents) {
@@ -138,6 +170,23 @@ class MessagingService implements VisualizationListener, InitializationService {
       }
     }
   }
+
+    void receiveMessage (CustomerReport msg){
+    //log.error "received report ${msg}"
+    customers?.each { Customer c ->
+      if (c.name == removeSpaces(msg.name)) {
+        if (c.powerUsageValues == null) {
+          c.powerUsageValues = []
+        }
+        //log.error "old ${c.powerUsageValues}"
+        c.powerUsageValues.add([c.powerUsageCounter, new BigDecimal(msg.powerUsage)])
+        c.powerUsageCounter = c.powerUsageCounter + 1
+        //log.error "new ${c.powerUsageValues}"
+        totalLoad = totalLoad + msg.powerUsage
+      }
+    }
+  }
+
 
   void receiveMessage (BalancingTransaction msg) {
     for (agent in agents) {
@@ -157,8 +206,8 @@ class MessagingService implements VisualizationListener, InitializationService {
          * Process the balancing charges
          */
         agent.balancingCharge = msg.charge
-        agent.balancingChargeHistory.add(agent.balancingCharge)
-        agent.balancingChargeMean = getMeanSimple(agent.balancingChargeHistory)
+        agent.balancingChargeHistory.add([timeslotNum,agent.balancingCharge])
+//        agent.balancingChargeMean = getMeanSimple(agent.balancingChargeHistory)
 
         totalChargingSum += msg.charge
       }
@@ -184,6 +233,7 @@ class MessagingService implements VisualizationListener, InitializationService {
     customerInstance.multiContracting = customer.multiContracting
     customerInstance.canNegotiate = customer.canNegotiate
     customerInstance.powerTypes = customer.powerTypes
+    //customerInstance.customerInfo = msg.customer
     customers.add(customerInstance)
   }
 
